@@ -3,10 +3,6 @@ apt update && apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
-sed -i s/^exit\ 0/tail\ -n\ +8\ \\/bin\\/pppinstall\ \|\ sh\\nexit\ 0/ /etc/rc.local
-reboot
-stty -F /dev/ttyAMA0 115200
-chat '' 'at+cgdcont=1,"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 echo connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /etc/ppp/peers/provider
 echo interface=wlan0\\nbridge=br0\\ncountry_code=CA\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=RPi-5G\\nwpa_passphrase=gloriousgold79\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP > /etc/hostapd/hostapd.conf
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
@@ -17,7 +13,11 @@ iptables-save > /etc/iptables
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir /media/pi
 chmod -R 777 /media/pi
-sed -i s/tail\ -n\ +8\ \\/bin\\/pppinstall\ \|\ sh/pon\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
+sed -i s/^exit\ 0/tail\ -n\ +8\ \\/bin\\/pppinstall\ \|\ sh\\nexit\ 0/ /etc/rc.local
+reboot
+stty -F /dev/ttyAMA0 115200
+chat '' 'at+cgdcont=1,"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
+sed -i s/tail\ -n\ +8\ \\/bin\\/pppinstall\ \|\ sh/pon\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

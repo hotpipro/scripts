@@ -1,4 +1,4 @@
-HotPi-PPP Command List
+#HotPi-PPP Command List
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 
@@ -8,7 +8,7 @@ HotPi-PPP Command List
 
 --------------------------------------------
 
-HotPi-QMI Command List
+#HotPi-QMI Command List
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 

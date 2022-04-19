@@ -3,7 +3,8 @@ apt update && apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
-echo connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /etc/ppp/peers/provider
+echo \#!/bin/sh\\nconnect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
+chmod 755 /bin/hotpi-startppp
 echo \#!/bin/sh\\necho Enter your Wi-Fi country code '\(US or CA for United States or Canada\)'.\\nread hotpicc\\necho Your Wi-Fi country code has been set to "'"'"'"'"'$hotpicc'"'"'"'"'"\\necho Create your Wi-Fi network name '\(no special characters or spaces\)'.\\nread hotpinn\\necho Your Wi-Fi network name has been set to "'"'"'"'"'$hotpinn'"'"'"'"'"\\necho Create your Wi-Fi network password '\(no special characters or spaces\)'.\\nread hotpinp\\necho Your Wi-Fi network password has been set to "'"'"'"'"'$hotpinp'"'"'"'"'"\\necho If you need to change these settings, you can do so using the "'"'"'sudo hotpi-setwifi'"'"'" command in Terminal.'\\\\n'Press ENTER to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 chmod 755 /bin/hotpi-setwifi
 hotpi-setwifi
@@ -17,9 +18,9 @@ mkdir /media/pi
 chmod -R 777 /media/pi
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-sed -i s/^exit\ 0/tail\ -n\ +22\ \\/bin\\/hotpi-ppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
+sed -i s/^exit\ 0/tail\ -n\ +23\ \\/bin\\/hotpi-ppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 reboot
 stty -F /dev/ttyAMA0 115200
 chat '' 'at+cgdcont=1,"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
-sed -i s/tail\ -n\ +22\ \\/bin\\/hotpi-ppp\ \|\ sh/pon\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
+sed -i s/tail\ -n\ +23\ \\/bin\\/hotpi-ppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

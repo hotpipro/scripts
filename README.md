@@ -2,9 +2,9 @@ HotPi-PPP Command List
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 
-`sudo poff` - Stop PPP connection
+`sudo hotpi-startppp` - Stop PPP connection
 
-`sudo pon` - Start PPP connection
+`sudo hotpi-stopppp` - Start PPP connection
 
 --------------------------------------------
 

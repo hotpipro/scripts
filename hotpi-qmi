@@ -3,7 +3,7 @@ apt update && apt upgrade -y
 apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
 echo \#!/bin/sh\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip\\nqmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid\\nudhcpc -i wwan0 > /bin/hotpi-startqmi
 chmod 755 /bin/hotpi-startqmi
-echo \#!/bin/sh\\nifconfig wwan0 down\\nThe QMI connection has been stopped. > /bin/hotpi-stopqmi
+echo \#!/bin/sh\\nifconfig wwan0 down\\necho The QMI connection has been stopped. > /bin/hotpi-stopqmi
 chmod 755 /bin/hotpi-stopqmi
 echo \#!/bin/sh\\necho Enter your Wi-Fi country code '\(US or CA for United States or Canada\)'.\\nread hotpicc\\necho Your Wi-Fi country code has been set to "'"'"'"'"'$hotpicc'"'"'"'"'"\\necho Create your Wi-Fi network name '\(no special characters or spaces\)'.\\nread hotpinn\\necho Your Wi-Fi network name has been set to "'"'"'"'"'$hotpinn'"'"'"'"'"\\necho Create your Wi-Fi network password '\(no special characters or spaces\)'.\\nread hotpinp\\necho Your Wi-Fi network password has been set to "'"'"'"'"'$hotpinp'"'"'"'"'"\\necho If you need to change these settings, you can do so using the "'"'"'sudo hotpi-setwifi'"'"'" command in Terminal.'\\\\n'Press ENTER to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 chmod 755 /bin/hotpi-setwifi

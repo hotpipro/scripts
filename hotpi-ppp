@@ -5,6 +5,8 @@ sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
 echo \#!/bin/sh\\nconnect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
 chmod 755 /bin/hotpi-startppp
+echo \#!/bin/sh\\nifconfig ppp0 down > /bin/hotpi-stopppp
+chmod 755 /bin/hotpi-stopppp
 echo \#!/bin/sh\\necho Enter your Wi-Fi country code '\(US or CA for United States or Canada\)'.\\nread hotpicc\\necho Your Wi-Fi country code has been set to "'"'"'"'"'$hotpicc'"'"'"'"'"\\necho Create your Wi-Fi network name '\(no special characters or spaces\)'.\\nread hotpinn\\necho Your Wi-Fi network name has been set to "'"'"'"'"'$hotpinn'"'"'"'"'"\\necho Create your Wi-Fi network password '\(no special characters or spaces\)'.\\nread hotpinp\\necho Your Wi-Fi network password has been set to "'"'"'"'"'$hotpinp'"'"'"'"'"\\necho If you need to change these settings, you can do so using the "'"'"'sudo hotpi-setwifi'"'"'" command in Terminal.'\\\\n'Press ENTER to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 chmod 755 /bin/hotpi-setwifi
 hotpi-setwifi

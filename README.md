@@ -1,4 +1,4 @@
-HotPi-PPP (3 Mbps)
+HotPi-PPP (GPIO - 3 Mbps)
 
 Command List
 
@@ -10,7 +10,7 @@ Command List
 
 --------------------------------------------
 
-HotPi-QMI (150 Mbps)
+HotPi-QMI (USB - 150 Mbps)
 
 Command List
 

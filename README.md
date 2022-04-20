@@ -2,6 +2,8 @@ HotPi-PPP (GPIO - 3 Mbps)
 
 Command List
 
+`sudo hotpi-installppp` - Install HotPi-PPP
+
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 
 `sudo hotpi-startppp` - Start PPP connection
@@ -13,6 +15,8 @@ Command List
 HotPi-QMI (USB - 150 Mbps)
 
 Command List
+
+`sudo hotpi-installqmi` - Install HotPi-QMI
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 

@@ -20,9 +20,9 @@ mkdir /media/pi
 chmod -R 777 /media/pi
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-sed -i s/^exit\ 0/tail\ -n\ +27\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 echo The installation is now complete. For a complete list of available commands, you may use the "'"'"'sudo hotpi-help'"'"'" command in Terminal.//nPress ENTER to reboot...
 read hotpips
+sed -i s/^exit\ 0/tail\ -n\ +27\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 reboot
 stty -F /dev/ttyAMA0 115200
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0

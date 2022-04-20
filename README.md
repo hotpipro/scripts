@@ -1,4 +1,6 @@
-HotPi-PPP Command List
+HotPi-PPP (3 Mbps)
+
+Command List
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 
@@ -8,7 +10,9 @@ HotPi-PPP Command List
 
 --------------------------------------------
 
-HotPi-QMI Command List
+HotPi-QMI (150 Mbps)
+
+Command List
 
 `sudo hotpi-setwifi` - Set Wi-Fi settings
 

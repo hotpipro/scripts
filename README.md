@@ -1,10 +1,6 @@
 HotPi-PPP (GPIO - 3 Mbps)
 
-
-
-
 Command List
-
 
 `sudo hotpi-help` - List available commands
 
@@ -20,9 +16,7 @@ Command List
 
 HotPi-QMI (USB - 150 Mbps)
 
-
 Command List
-
 
 `sudo hotpi-help` - List available commands
 

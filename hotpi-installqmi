@@ -19,6 +19,6 @@ chmod -R 777 /media/pi
 sed -i s/^exit\ 0/hotpi-startqmi\ \;\ iptables-restore\ \<\ \\/etc\\/iptables\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo The installation is now complete. For a complete list of available commands, you may use the "'"'"'sudo hotpi-help'"'"'" command in Terminal.//nPress ENTER to reboot...
+echo The installation is now complete. For a complete list of available commands, you may use the '"sudo hotpi-help"' command in Terminal.//nPress ENTER to reboot...
 read hotpips
 reboot

@@ -20,7 +20,7 @@ mkdir /media/pi
 chmod -R 777 /media/pi
 echo \#!/bin/sh\\necho '\\\\nHotPi-PPP \(GPIO - 3 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installppp - Install HotPi-PPP\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startppp - Start PPP connection\\\\n\\\\nsudo hotpi-stopppp - Stop PPP connection\\\\'n > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
-sed -i s/^exit\ 0/tail\ -n\ +32\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
+sed -i s/^exit\ 0/tail\ -n\ +31\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 sleep 1
@@ -31,5 +31,5 @@ read hotpips
 reboot
 stty -F /dev/ttyAMA0 115200
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
-sed -i s/tail\ -n\ +32\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
+sed -i s/tail\ -n\ +31\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

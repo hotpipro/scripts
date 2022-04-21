@@ -5,7 +5,7 @@ echo \#!/bin/sh\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmic
 chmod 755 /bin/hotpi-startqmi
 echo \#!/bin/sh\\nifconfig wwan0 down \&\& echo The QMI connection has been stopped. > /bin/hotpi-stopqmi
 chmod 755 /bin/hotpi-stopqmi
-echo \#!/bin/sh\\nsleep 3\\necho '\\\\nEnter your Wi-Fi country code \(US or CA for United States or Canada\):\\\\'n\\nread hotpicc\\nsleep 1\\necho '\\\\'nYour Wi-Fi country code has been set to "'"'"'"'"'"\033[;37m"$hotpicc"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name \(no special characters or spaces\):\\\\'n\\nread hotpinn\\nsleep 1\\necho '\\\\'nYour Wi-Fi network name has been set to "'"'"'"'"'"\033[;37m"$hotpinn"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password \(no special characters or spaces\):\\\\'n\\nread hotpinp\\nsleep 1\\necho '\\\\'nYour Wi-Fi network password has been set to "'"'"'"'"'"\033[;37m"$hotpinp"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\'nShould you wish to change these settings, you may do so using the "'"'"'"\033[;37m"sudo hotpi-setwifi"\033[;32m"'"'"'" command in Terminal...\\nsleep 5\\necho '\\\\'nPress "'"'"'"\033[;37m"ENTER"\033[;32m"'"'"'" to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
+echo \#!/bin/sh\\nsleep 1\\necho '\\\\nEnter your Wi-Fi country code \(US or CA for United States or Canada\):\\\\'n\\nread hotpicc\\nsleep 1\\necho '\\\\'nYour Wi-Fi country code has been set to "'"'"'"'"'"\033[;37m"$hotpicc"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name \(no special characters or spaces\):\\\\'n\\nread hotpinn\\nsleep 1\\necho '\\\\'nYour Wi-Fi network name has been set to "'"'"'"'"'"\033[;37m"$hotpinn"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password \(no special characters or spaces\):\\\\'n\\nread hotpinp\\nsleep 1\\necho '\\\\'nYour Wi-Fi network password has been set to "'"'"'"'"'"\033[;37m"$hotpinp"\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\'nShould you wish to change these settings, you may do so using the "'"'"'"\033[;37m"sudo hotpi-setwifi"\033[;32m"'"'"'" command in Terminal...\\nsleep 5\\necho '\\\\'nPress "'"'"'"\033[;37m"ENTER"\033[;32m"'"'"'" to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 chmod 755 /bin/hotpi-setwifi
 hotpi-setwifi
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
@@ -21,7 +21,7 @@ chmod 755 /bin/hotpi-help
 sed -i s/^exit\ 0/hotpi-startqmi\ \;\ iptables-restore\ \<\ \\/etc\\/iptables\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-sleep 3
+sleep 1
 echo \\nThe HotPi-QMI installation process has been completed successfully. For a detailed list of available commands, you may use the '"'"\033[;37m"sudo hotpi-help"\033[;32m"'"' command in Terminal...
 sleep 5
 echo \\n\\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to reboot...

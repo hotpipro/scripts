@@ -20,11 +20,11 @@ mkdir /media/pi
 chmod -R 777 /media/pi
 echo \#!/bin/sh\\necho '\\\\nHotPi-PPP \(GPIO - 3 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installppp - Install HotPi-PPP\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startppp - Start PPP connection\\\\n\\\\nsudo hotpi-stopppp - Stop PPP connection\\\\'n > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
+sed -i s/^exit\ 0/tail\ -n\ +29\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 echo \\nThe installation process has been completed successfully. For a detailed list of available commands, you may use the '"sudo hotpi-help"' command in Terminal.\\n\\n\\nPress ENTER to reboot...
 read hotpips
-sed -i s/^exit\ 0/tail\ -n\ +29\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 reboot
 stty -F /dev/ttyAMA0 115200
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0

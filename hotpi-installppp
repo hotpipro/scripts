@@ -22,7 +22,7 @@ echo \#!/bin/sh\\necho '\\\\nHotPi-PPP \(GPIO - 3 Mbps\)\\\\n\\\\n\\\\nCommand L
 chmod 755 /bin/hotpi-help
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo The installation has been completed successfully. For a list of available commands, you may use the '"sudo hotpi-help"' command in Terminal.\\nPress ENTER to reboot...
+echo The installation has been completed successfully. For a list of available commands, you may use the '"sudo hotpi-help"' command in Terminal.\\n\\n\\nPress ENTER to reboot...
 read hotpips
 sed -i s/^exit\ 0/tail\ -n\ +29\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 reboot

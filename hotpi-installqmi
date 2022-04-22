@@ -12,15 +12,13 @@ hotpi-setwifi
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
 echo interface=br0\\ndhcp-range=192.168.0.2,192.168.0.10,24h >> /etc/dnsmasq.conf
 sed -i s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/ /etc/sysctl.conf
-iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
-iptables-save > /etc/iptables
+iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE ; iptables-save > /etc/iptables
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir /media/pi
 chmod -R 777 /media/pi
 echo \#!/bin/sh\\necho '\\\\nHotPi-QMI \(USB - 150 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installqmi - Install HotPi-QMI\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startqmi - Start QMI connection\\\\n\\\\nsudo hotpi-stopqmi - Stop QMI connection\\\\'n > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
 sed -i s/^exit\ 0/hotpi-startqmi\ \;\ iptables-restore\ \<\ \\/etc\\/iptables\\nexit\ 0/ /etc/rc.local
-systemctl unmask hostapd
-systemctl enable hostapd resolvconf
+systemctl unmask hostapd ; systemctl enable hostapd resolvconf
 sleep 1 ; echo \\nHotPi-QMI has been successfully installed on your system... ; sleep 3 ; echo \\nFor a detailed list of available commands, you may use the '"'"\033[;37m"sudo hotpi-help"\033[;32m"'"' command in Terminal... ; sleep 3 ; echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to reboot... ; read hotpips
 reboot

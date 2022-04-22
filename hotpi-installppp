@@ -23,7 +23,6 @@ sed -i s/^exit\ 0/tail\ -n\ +26\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /e
 systemctl unmask hostapd ; systemctl enable hostapd resolvconf
 sleep 1 ; echo \\nHotPi-PPP has been successfully installed on your system... ; sleep 3 ; echo \\nFor a detailed list of available commands, you may use the '"'"\033[;37m"sudo hotpi-help"\033[;32m"'"' command in Terminal... ; sleep 3 ; echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to reboot... ; read hotpips
 reboot
-stty -F /dev/ttyAMA0 115200
-chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
+stty -F /dev/ttyAMA0 115200 ; chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 sed -i s/tail\ -n\ +26\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

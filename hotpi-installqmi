@@ -1,7 +1,6 @@
 #!/bin/sh
 sleep 1 ; echo \\nHotPi-QMI will now be installed on your system... ; sleep 3 ; echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to continue... ; read hotpips
-apt update && apt upgrade -y
-apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
+apt update && apt upgrade -y ; apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
 echo \#!/bin/sh\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip \&\& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid \&\& udhcpc -i wwan0 > /bin/hotpi-startqmi
 chmod 755 /bin/hotpi-startqmi
 echo \#!/bin/sh\\nifconfig wwan0 down \&\& echo The QMI connection has been stopped. > /bin/hotpi-stopqmi

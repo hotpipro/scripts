@@ -1,7 +1,6 @@
 #!/bin/sh
 sleep 1 ; echo \\nHotPi-PPP will now be installed on your system... ; sleep 3 ; echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to continue... ; read hotpips
-apt update && apt upgrade -y
-apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
+apt update ; apt upgrade -y ; apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
 echo \#!/bin/sh\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
@@ -20,11 +19,11 @@ mkdir /media/pi
 chmod -R 777 /media/pi
 echo \#!/bin/sh\\necho '\\\\nHotPi-PPP \(GPIO - 3 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installppp - Install HotPi-PPP\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startppp - Start PPP connection\\\\n\\\\nsudo hotpi-stopppp - Stop PPP connection\\\\'n > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
-sed -i s/^exit\ 0/tail\ -n\ +27\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
+sed -i s/^exit\ 0/tail\ -n\ +26\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd ; systemctl enable hostapd resolvconf
 sleep 1 ; echo \\nHotPi-PPP has been successfully installed on your system... ; sleep 3 ; echo \\nFor a detailed list of available commands, you may use the '"'"\033[;37m"sudo hotpi-help"\033[;32m"'"' command in Terminal... ; sleep 3 ; echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to reboot... ; read hotpips
 reboot
 stty -F /dev/ttyAMA0 115200
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
-sed -i s/tail\ -n\ +27\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
+sed -i s/tail\ -n\ +26\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp\ \;\ iptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

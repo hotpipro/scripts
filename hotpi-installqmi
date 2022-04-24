@@ -1,37 +1,151 @@
 #!/bin/sh
-sleep 1
-echo "\033[;32m"\\nHotPi-QMI will now be installed on your system...
-sleep 3
-echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to continue...
+
+GREEN="\033[;32m"
+WHITE="\033[;37m"
+RESET="\e[0m"
+
+/bin/echo -e "
+
+${GREEN}HotPi-QMI will now be installed on your system.
+
+Press \"${WHITE}ENTER${GREEN}\" to continue..."
 read hotpips
+
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
-echo \#!/bin/sh\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip \&\& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid \&\& udhcpc -i wwan0 > /bin/hotpi-startqmi
+
+# Start script
+cat <<'EOF' > /bin/hotpi-startqmi
+#!/bin/sh
+qmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online
+qmicli -d /dev/cdc-wdm0 -E raw-ip && qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid && udhcpc -i wwan0
+EOF
 chmod 755 /bin/hotpi-startqmi
-echo \#!/bin/sh\\nifconfig wwan0 down \&\& echo The QMI connection has been stopped. > /bin/hotpi-stopqmi
+
+# Stop script
+cat <<'EOF' > /bin/hotpi-stopqmi
+#!/bin/sh
+ifconfig wwan0 down && echo The QMI connection has been stopped.
+EOF
 chmod 755 /bin/hotpi-stopqmi
-echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your Wi-Fi country code \(United States: US, Canada: CA, United Kingdom: UK\):\\\\'n\\nread hotpicc\\nsleep 1\\necho '\\\\'nYour Wi-Fi country code has been set to "'"'"'"'"'"\\033[;37m"$hotpicc"\\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name \(no special characters or spaces\):\\\\'n\\nread hotpinn\\nsleep 1\\necho '\\\\'nYour Wi-Fi network name has been set to "'"'"'"'"'"\\033[;37m"$hotpinn"\\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password \(no special characters or spaces\):\\\\'n\\nread hotpinp\\nsleep 1\\necho '\\\\'nYour Wi-Fi network password has been set to "'"'"'"'"'"\\033[;37m"$hotpinp"\\033[;32m"'"'"'"'"'"...\\nsleep 3\\necho '\\\\'nShould you wish to change these settings, you may do so using the "'"'"'"'"'"\\033[;37m"sudo hotpi-setwifi"\\033[;32m"'"'"'"'"'" command in Terminal...\\nsleep 3\\necho '\\\\'nPress "'"'"'"'"'"\\033[;37m"ENTER"\\033[;32m"'"'"'"'"'" to continue...\\nread hotpips\\necho interface=wlan0'\\\\nbridge=br0\\\\ncountry_code=$hotpicc\\\\nieee80211ac=1\\\\nwmm_enabled=1\\\\nhw_mode=a\\\\nchannel=36\\\\nht_capab=[HT40+]\\\\nssid=$hotpinn\\\\nwpa_passphrase=$hotpinp\\\\nwpa=2\\\\nwpa_key_mgmt=WPA-PSK\\\\nrsn_pairwise=CCMP >' /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
+
+# Wifi config script
+/bin/cat <<'EOF' > /bin/hotpi-setwifi
+#!/bin/sh
+GREEN="\033[;32m"
+WHITE="\033[;37m"
+RESET="\e[0m"
+
+/bin/echo -e "\n${GREEN}Enter your Wi-Fi country code (United States: US, Canada: CA, United Kingdom: UK):"
+read hotpicc
+
+/bin/echo -e "\nEnter the Wi-Fi network name to create (no special characters or spaces):"
+read hotpinn
+
+/bin/echo -e "\nPassword to set for this Wi-Fi network (no special characters or spaces):"
+read hotpinp
+
+/bin/echo -e "
+THE Wi-Fi country code will be set to: \"${WHITE}${hotpicc}${GREEN}\"
+The Wi-Fi network name will be set to: \"${WHITE}${hotpinn}${GREEN}\"
+The Wi-Fi password will be set to:     \"${WHITE}${hotpinp}${GREEN}\"
+
+Should you wish to change these settings, you may do so using the \"${WHITE}sudo hotpi-setwifi${GREEN}\" command in Terminal.
+
+Press \"${WHITE}ENTER${GREEN}\" to create the Wi-Fi config file..."
+"
+read hotpips
+
+/bin/cat <<EOT > /etc/hostapd/hostapd.conf
+interface=wlan0
+bridge=br0
+country_code=${hotpicc}
+ieee80211ac=1
+wmm_enabled=1
+hw_mode=a
+channel=36
+ht_capab=[HT40+]
+ssid=${hotpinn}
+wpa_passphrase=${hotpinp}
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+EOT
+/bin/echo -e "Config file \"${WHITE}/etc/hostapd/hostapd.conf${GREEN}\" has been created."
+/bin/echo -e "${RESET}"
+EOF
 chmod 755 /bin/hotpi-setwifi
 hotpi-setwifi
-echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
-echo interface=br0\\ndhcp-range=192.168.0.2,192.168.0.10,24h >> /etc/dnsmasq.conf
-sed -i s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/ /etc/sysctl.conf
+
+# Create network bridge between Wi-Fi and Ethernet
+/bin/cat <<'EOF' >> /etc/network/interfaces
+allow-hotplug br0
+iface br0 inet static
+address 192.168.0.1
+bridge_ports wlan0 eth0
+EOF
+
+# Config DHCP
+/bin/cat <<'EOF' >> /etc/dnsmasq.conf
+interface=br0
+dhcp-range=192.168.0.2,192.168.0.10,24h
+EOF
+
+# Config NAT
+sed -i "s/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/" /etc/sysctl.conf
 iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
 iptables-save > /etc/iptables
-echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
+
+# Config Samba
+/bin/cat <<'EOF' >> /etc/samba/smb.conf
+[External Storage]
+path = /media/pi
+public = yes
+writeable = yes
+EOF
 mkdir /media/pi
 chmod -R 777 /media/pi
-echo \#!/bin/sh\\necho '\\\\nHotPi-QMI \(USB - 150 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installqmi - Install HotPi-QMI\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startqmi - Start QMI connection\\\\n\\\\nsudo hotpi-stopqmi - Stop QMI connection\\\\'n > /bin/hotpi-help
+
+# Help script
+/bin/cat <<'EOF' /bin/hotpi-help
+#!/bin/sh
+GREEN="\033[;32m"
+WHITE="\033[;37m"
+RESET="\e[0m"
+/bin/echo -e "${RESET}
+HotPi-QMI (USB - 150 Mbps)
+
+Command List:
+
+${GREEN}sudo hotpi-help${RESET}       - List available commands
+${GREEN}sudo hotpi-installqmi${RESET} - Install HotPi-QMI
+${GREEN}sudo hotpi-setwifi${RESET}    - Set Wi-Fi settings
+${GREEN}sudo hotpi-startqmi${RESET}   - Start QMI connection
+${GREEN}sudo hotpi-stopqmi${RESET}    - Stop QMI connection
+"
+EOF
 chmod 755 /bin/hotpi-help
-sed -i s/^exit\ 0/hotpi-startqmi\\niptables-restore\ \<\ \\/etc\\/iptables\\nexit\ 0/ /etc/rc.local
+
+# At boot time
+sed -i 's/^exit\ 0//e' /etc/rc.local
+cat <<"EOF" >> /etc/rc.local
+hotpi-startqmi
+iptables-restore </etc/iptables
+exit 0
+EOF
+
+# Systemctl services
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-sleep 1
-echo \\nHotPi-QMI has been successfully installed on your system...
-sleep 3
-echo \\nFor a detailed list of available commands, you may use the '"'"\033[;37m"sudo hotpi-help"\033[;32m"'"' command in Terminal...
-sleep 3
-echo \\nPress '"'"\033[;37m"ENTER"\033[;32m"'"' to reboot...
+
+# Summary
+/bin/echo -e "${GREEN}
+HotPi-QMI has been successfully installed on your system.
+
+For a detailed list of available commands, you may use the \"${WHITE}sudo hotpi-help${GREEN}\" command in Terminal.
+
+Press \"${WHITE}ENTER${GREEN}\" to reboot...${RESET}"
 read hotpips
+
 reboot

@@ -128,7 +128,7 @@ EOF
 chmod 755 /bin/hotpi-help
 
 # At boot time
-sed -i 's/^exit\ 0//e' /etc/rc.local
+sed -i 's/^exit 0//' /etc/rc.local
 cat <<"EOF" >> /etc/rc.local
 hotpi-startqmi
 iptables-restore </etc/iptables

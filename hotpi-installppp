@@ -9,7 +9,7 @@ apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
-echo \#!/bin/sh\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
+echo \#!/bin/sh\\npppd connect \"chat \'\' atd*99#\" /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
 chmod 755 /bin/hotpi-startppp
 echo \#!/bin/sh\\npoff \&\& echo The PPP connection has been stopped. > /bin/hotpi-stopppp
 chmod 755 /bin/hotpi-stopppp

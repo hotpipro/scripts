@@ -38,6 +38,6 @@ echo \\nPress \""\033[;37m"ENTER"\033[;32m"\" to reboot...
 read hotpips
 reboot
 stty -F /dev/ttyAMA0 115200
-chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
+chat '' at+cgdcont=1,\"ipv4v6\" OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 sed -i s/tail\ -n\ +40\ \\/bin\\/hotpi-installppp\ \|\ sh/stty\ -F\ \\/dev\\/ttyAMA0\ 3000000\\nhotpi-startppp\\niptables-restore\ \<\ \\/etc\\/iptables/ /etc/rc.local
 reboot

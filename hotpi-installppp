@@ -24,7 +24,7 @@ iptables-save > /etc/iptables
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir /media/pi
 chmod -R 777 /media/pi
-echo \#!/bin/sh\\necho '\\\\nHotPi-PPP \(GPIO - 3 Mbps\)\\\\n\\\\n\\\\nCommand List\\\\n\\\\n\\\\nsudo hotpi-help - List available commands\\\\n\\\\nsudo hotpi-installppp - Install HotPi-PPP\\\\n\\\\nsudo hotpi-setwifi - Set Wi-Fi settings\\\\n\\\\nsudo hotpi-startppp - Start PPP connection\\\\n\\\\nsudo hotpi-stopppp - Stop PPP connection\\\\'n > /bin/hotpi-help
+echo \#!/bin/sh\\necho \"\\nHotPi-PPP \(GPIO - 3 Mbps\)\\n\\n\\nCommand List:\\n\\n\\nsudo hotpi-help - List available commands\\n\\nsudo hotpi-installppp - Install HotPi-PPP\\n\\nsudo hotpi-setwifi - Set Wi-Fi settings\\n\\nsudo hotpi-startppp - Start PPP connection\\n\\nsudo hotpi-stopppp - Stop PPP connection\\n\" > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
 sed -i s/^exit\ 0/tail\ -n\ +40\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd

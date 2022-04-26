@@ -1,6 +1,6 @@
 #!/bin/sh
 sleep 1
-echo "\033[;32m"\\nHotPi-PPP will now be installed...
+echo "\033[;32m"\\nHotPi-PPP will now be installed on your system...
 sleep 3
 echo \\nPress "\033[;37m"ENTER"\033[;32m" to continue...
 read hotpips
@@ -11,7 +11,7 @@ sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
 echo \#!/bin/sh\\npppd connect \"chat \'\' atd*99#\" /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
 chmod 755 /bin/hotpi-startppp
-echo \#!/bin/sh\\npoff \&\& echo PPP connection stopped. > /bin/hotpi-stopppp
+echo \#!/bin/sh\\npoff \&\& echo The PPP connection has been stopped. > /bin/hotpi-stopppp
 chmod 755 /bin/hotpi-stopppp
 echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your Wi-Fi country code:\\\\n'\\nread hotpicc\\nsleep 1\\necho '\\\\nWi-Fi country code set to "\\033[;37m"$hotpicc"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\nsleep 1\\necho '\\\\nWi-Fi network name set to "\\033[;37m"$hotpinn"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\nsleep 1\\necho '\\\\nWi-Fi network password set to "\\033[;37m"$hotpinp"\\033[;32m"'...\\nsleep 3\\necho '\\\\nTo change these settings, use the "\\033[;37m"sudo hotpi-setwifi"\\033[;32m"' command...\\nsleep 3\\necho '\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 chmod 755 /bin/hotpi-setwifi
@@ -30,7 +30,7 @@ sed -i s/^exit\ 0/tail\ -n\ +40\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /e
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 sleep 1
-echo \\nHotPi-PPP has been successfully installed...
+echo \\nHotPi-PPP has been successfully installed on your system...
 sleep 3
 echo \\nFor a command list, use the "\033[;37m"sudo hotpi-help"\033[;32m" command...
 sleep 3

@@ -7,7 +7,7 @@ read hotpips
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
-echo \#!/bin/sh\\npoff -a \> /dev/null\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your modem baud rate:\\\\n'\\nread hotpibr\\nsleep 1\\nstty -F /dev/ttyAMA0 '$hotpibr 2> /dev/null || { echo \\\\nInvalid modem baud rate... ; hotpi-setmodem ; exit ; }'\\nchat -vst 3 "''" at OK '> /dev/ttyAMA0 < /dev/ttyAMA0 2> /dev/null || { echo \\\\nIncorrect modem baud rate... ; hotpi-setmodem ; exit ; }'\\necho '\\\\nModem baud rate set to "\\033[;37m"$hotpibr"\\033[;32m"'...\\necho '$hotpibr >' /bin/hotpi-baudrate > /bin/hotpi-setmodem
+echo \#!/bin/sh\\npoff -a \> /dev/null\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your modem baud rate:\\\\n'\\nread hotpibr\\nsleep 1\\nstty -F /dev/ttyAMA0 '$hotpibr 2> /dev/null || { echo \\\\nInvalid modem baud rate... ; hotpi-setmodem ; exit ; }'\\nchat -t 3 "''" at OK '> /dev/ttyAMA0 < /dev/ttyAMA0 2> /dev/null || { echo \\\\nIncorrect modem baud rate... ; hotpi-setmodem ; exit ; }'\\necho '\\\\nModem baud rate set to "\\033[;37m"$hotpibr"\\033[;32m"'...\\necho '$hotpibr >' /bin/hotpi-baudrate > /bin/hotpi-setmodem
 chmod 755 /bin/hotpi-setmodem
 hotpi-setmodem
 echo \#!/bin/sh\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
@@ -45,7 +45,7 @@ echo \\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot
 stty -F /dev/ttyAMA0 $(cat /bin/hotpi-baudrate)
-chat -vs '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
+chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 stty -F /dev/ttyAMA0 3000000
 hotpi-startppp
 sed -i s/tail\ -n\ +47\ \\/bin\\/hotpi-installppp\ \|\ sh/stty\ -F\ \\/dev\\/ttyAMA0\ 3000000\\nhotpi-startppp/ /etc/rc.local

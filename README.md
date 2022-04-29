@@ -11,7 +11,7 @@ sudo hotpi-startppp - Start PPP connection
 
 sudo hotpi-stopppp - Stop PPP connection
 
---------------------------------------------
+------------------------------------------
 
 HotPi-QMI (USB - 150 Mbps)
 

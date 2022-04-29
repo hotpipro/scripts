@@ -46,7 +46,12 @@ echo \\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot
 stty -F /dev/ttyAMA0 $(cat /etc/hotpi-baudrate)
+if [ $(cat /etc/hotpi-baudrate) = 3000000 ]
+then
+chat '' at+cgdcont=1,'"ipv4v6"' OK > /dev/ttyAMA0 < /dev/ttyAMA0
+else
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 stty -F /dev/ttyAMA0 3000000
+fi
 hotpi-startppp
 sed -i s/tail\ -n\ +48\ \\/bin\\/hotpi-installppp\ \|\ sh/stty\ -F\ \\/dev\\/ttyAMA0\ 3000000\\nhotpi-startppp/ /etc/rc.local

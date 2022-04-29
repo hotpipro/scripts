@@ -10,9 +10,9 @@ apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your current modem baud rate:\\\\n'\\necho Default: 115200'\\\\n'\\nread hotpibr\\nif '[ $hotpibr = 9600 ] || [ $hotpibr = 19200 ] || [ $hotpibr = 38400 ] || [ $hotpibr = 57600 ] || [ $hotpibr = 115200 ] || [ $hotpibr = 230400 ] || [ $hotpibr = 460800 ] || [ $hotpibr = 921600 ] || [ $hotpibr = 1500000 ] || [ $hotpibr = 2000000 ] || [ $hotpibr = 2500000 ]'\\nthen\\nsleep 1\\necho '\\\\n'Maximizing modem baud rate...\\nsleep 3\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'...\\nelif '[ $hotpibr = 3000000 ]'\\nthen\\nsleep 1\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'...\\nelse\\nsleep 1\\necho '\\\\n'Invalid modem baud rate...\\nsleep 2\\nhotpi-setmodem\\nexit\\nfi\\necho '$hotpibr >' /etc/hotpi-baudrate > /bin/hotpi-setmodem
 chmod 755 /bin/hotpi-setmodem
 hotpi-setmodem
-echo \#!/bin/sh\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach > /bin/hotpi-startppp
+echo \#!/bin/sh\\necho \&\& pppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach '&& sleep 1 && echo \\\\nThe PPP connection has been started. && sleep 1 &&' echo > /bin/hotpi-startppp
 chmod 755 /bin/hotpi-startppp
-echo \#!/bin/sh\\npoff \&\& echo The PPP connection has been stopped. > /bin/hotpi-stopppp
+echo \#!/bin/sh\\nsleep 1 '&& poff -a > /dev/null && echo \\\\nThe PPP connection has been stopped. || echo \\\\nThere is no PPP connection running. && sleep 1 &&' echo > /bin/hotpi-stopppp
 chmod 755 /bin/hotpi-stopppp
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 sed -i /dtoverlay=pi3-disable-bt/d /boot/config.txt

@@ -30,7 +30,7 @@ mkdir -p /media/pi
 chmod -R 777 /media/pi
 echo \#!/bin/sh\\necho \"\\nHotPi-QMI \(USB - 150 Mbps\)\\n\\n\\nCommand List:\\n\\n\\nsudo hotpi-help - View command list\\n\\nsudo hotpi-setwifi - Set Wi-Fi settings\\n\\nsudo hotpi-startqmi - Start QMI connection\\n\\nsudo hotpi-stopqmi - Stop QMI connection\\n\" > /bin/hotpi-help
 chmod 755 /bin/hotpi-help
-sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /stty\ -F\ \\/dev\\/ttyUSB2\ 115200/d -e /hotpi-startqmi/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\nstty\ -F\ \\/dev\\/ttyUSB2\ 115200\\nhotpi-startqmi\\nexit\ 0/ /etc/rc.local
+sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startqmi/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\nhotpi-startqmi\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 sleep 1

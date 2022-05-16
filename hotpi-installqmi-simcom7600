@@ -7,13 +7,15 @@ read hotpips
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
+echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your Wi-Fi country code:\\\\n'\\necho Canada: CA\\necho United Kingdom: UK\\necho United States: US'\\\\n'\\nread hotpicc\\nsleep 1\\necho '\\\\nWi-Fi country code set to "\\033[;37m"$hotpicc"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\nsleep 1\\necho '\\\\nWi-Fi network name set to "\\033[;37m"$hotpinn"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\nsleep 1\\necho '\\\\nWi-Fi network password set to "\\033[;37m"$hotpinp"\\033[;32m"'...\\nsleep 3\\necho '\\\\nTo change these settings, use the "\\033[;37m"sudo hotpi-setwifi"\\033[;32m"' command...\\nsleep 3\\necho '\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
+chmod 755 /bin/hotpi-setwifi
+hotpi-setwifi
 echo \#!/bin/sh\\nsleep 1\\necho\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip '&& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid && udhcpc -i wwan0 && sleep 1 && echo \\\\n'The QMI connection has been started.\\nsleep 1\\necho > /bin/hotpi-startqmi
 chmod 755 /bin/hotpi-startqmi
 echo \#!/bin/sh\\nsleep 1\\necho\\nifconfig wwan0 down \&\& echo The QMI connection has been stopped.\\nsleep 1\\necho > /bin/hotpi-stopqmi
 chmod 755 /bin/hotpi-stopqmi
-echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your Wi-Fi country code:\\\\n'\\necho Canada: CA\\necho United Kingdom: UK\\necho United States: US'\\\\n'\\nread hotpicc\\nsleep 1\\necho '\\\\nWi-Fi country code set to "\\033[;37m"$hotpicc"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\nsleep 1\\necho '\\\\nWi-Fi network name set to "\\033[;37m"$hotpinn"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\nsleep 1\\necho '\\\\nWi-Fi network password set to "\\033[;37m"$hotpinp"\\033[;32m"'...\\nsleep 3\\necho '\\\\nTo change these settings, use the "\\033[;37m"sudo hotpi-setwifi"\\033[;32m"' command...\\nsleep 3\\necho '\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
-chmod 755 /bin/hotpi-setwifi
-hotpi-setwifi
+echo \#!/bin/sh\\necho \"\\nHotPi-QMI \(USB - 150 Mbps\)\\n\\n\\nCommand List:\\n\\n\\nsudo hotpi-help - View command list\\n\\nsudo hotpi-setwifi - Set Wi-Fi settings\\n\\nsudo hotpi-startqmi - Start QMI connection\\n\\nsudo hotpi-stopqmi - Stop QMI connection\\n\" > /bin/hotpi-help
+chmod 755 /bin/hotpi-help
 sed -i -e /allow-hotplug\ br0/d -e /iface\ br0\ inet\ static/d -e /address\ 192.168.0.1/d -e /bridge_ports\ wlan0\ eth0/d /etc/network/interfaces
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
 sed -i -e /interface=br0/d -e /dhcp-range=192.168.0.2,192.168.0.10,24h/d /etc/dnsmasq.conf
@@ -26,8 +28,6 @@ sed -i -e /\\[External\ Storage]/d -e /path\ =\ \\/media\\/pi/d -e /public\ =\ y
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir -p /media/pi
 chmod -R 777 /media/pi
-echo \#!/bin/sh\\necho \"\\nHotPi-QMI \(USB - 150 Mbps\)\\n\\n\\nCommand List:\\n\\n\\nsudo hotpi-help - View command list\\n\\nsudo hotpi-setwifi - Set Wi-Fi settings\\n\\nsudo hotpi-startqmi - Start QMI connection\\n\\nsudo hotpi-stopqmi - Stop QMI connection\\n\" > /bin/hotpi-help
-chmod 755 /bin/hotpi-help
 sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startqmi/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\nhotpi-startqmi\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf

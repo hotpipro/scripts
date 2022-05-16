@@ -1,17 +1,15 @@
 #!/bin/sh
-sleep 1
-echo "\033[;32m"\\nHotPi-PPP will now be installed on your system...
-sleep 3
+echo "\033[;32m"\\nHotPi-PPP will now be installed on your system.
 echo \\nPress "\033[;37m"ENTER"\033[;32m" to continue...
 read hotpips
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 echo \#!/bin/sh\\necho \"\\nHotPi-PPP \(GPIO - 3 Mbps\)\\n\\n\\nCommand List:\\n\\n\\nsudo hotpi-help - View command list\\n\\nsudo hotpi-setwifi - Set Wi-Fi settings\\n\\nsudo hotpi-startppp - Start PPP connection\\n\\nsudo hotpi-stopppp - Stop PPP connection\\n\" > /bin/hotpi-help
-echo \#!/bin/sh\\nsleep 1\\necho '"\\033[;32m"\\\\nEnter your current modem baud rate:\\\\n'\\necho Default: 115200'\\\\n'\\nread hotpibr\\nif '[ $hotpibr = 9600 ] || [ $hotpibr = 19200 ] || [ $hotpibr = 38400 ] || [ $hotpibr = 57600 ] || [ $hotpibr = 115200 ] || [ $hotpibr = 230400 ] || [ $hotpibr = 460800 ] || [ $hotpibr = 921600 ] || [ $hotpibr = 1500000 ] || [ $hotpibr = 2000000 ] || [ $hotpibr = 2500000 ]'\\nthen\\nsleep 1\\necho '\\\\n'Maximizing modem baud rate...\\nsleep 3\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'...\\nelif '[ $hotpibr = 3000000 ]'\\nthen\\nsleep 1\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'...\\nelse\\nsleep 1\\necho '\\\\n'Invalid modem baud rate...\\nsleep 2\\nhotpi-setmodem\\nexit\\nfi\\necho '$hotpibr >' /etc/hotpi-baudrate > /bin/hotpi-setmodem
-echo \#!/bin/sh\\nsleep 3\\necho '\\\\nEnter your Wi-Fi country code:\\\\n'\\necho Canada: CA\\necho United Kingdom: UK\\necho United States: US'\\\\n'\\nread hotpicc\\nsleep 1\\necho '\\\\nWi-Fi country code set to "\\033[;37m"$hotpicc"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\nsleep 1\\necho '\\\\nWi-Fi network name set to "\\033[;37m"$hotpinn"\\033[;32m"'...\\nsleep 3\\necho '\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\nsleep 1\\necho '\\\\nWi-Fi network password set to "\\033[;37m"$hotpinp"\\033[;32m"'...\\nsleep 3\\necho '\\\\nTo change these settings, use the "\\033[;37m"sudo hotpi-setwifi"\\033[;32m"' command...\\nsleep 3\\necho '\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
-echo \#!/bin/sh\\necho\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach '&& sleep 1 && echo \\\\n'The PPP connection has been started.\\nsleep 1\\necho > /bin/hotpi-startppp
-echo \#!/bin/sh\\nsleep 1\\necho\\npoff -a \&\& echo The PPP connection has been stopped.\\nsleep 1\\necho > /bin/hotpi-stopppp
+echo \#!/bin/sh\\necho '"\\033[;32m"\\\\nEnter your current modem baud rate:\\\\n'\\necho Default: 115200'\\\\n'\\nread hotpibr\\nif '[ $hotpibr = 9600 ] || [ $hotpibr = 19200 ] || [ $hotpibr = 38400 ] || [ $hotpibr = 57600 ] || [ $hotpibr = 115200 ] || [ $hotpibr = 230400 ] || [ $hotpibr = 460800 ] || [ $hotpibr = 921600 ] || [ $hotpibr = 1500000 ] || [ $hotpibr = 2000000 ] || [ $hotpibr = 2500000 ]'\\nthen\\necho '\\\\n'Maximizing modem baud rate...\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'.\\nelif '[ $hotpibr = 3000000 ]'\\nthen\\necho '\\\\nModem baud rate set to "\\033[;37m"3000000"\\033[;32m"'.\\nelse\\necho '\\\\n'Invalid modem baud rate...\\nhotpi-setmodem\\nexit\\nfi\\necho '$hotpibr >' /etc/hotpi-baudrate > /bin/hotpi-setmodem
+echo \#!/bin/sh\\necho '\\\\nEnter your Wi-Fi country code:\\\\n'\\necho Canada: CA\\necho United Kingdom: UK\\necho United States: US'\\\\n'\\nread hotpicc\\necho '\\\\nWi-Fi country code set to "\\033[;37m"$hotpicc"\\033[;32m"'.\\necho '\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\necho '\\\\nWi-Fi network name set to "\\033[;37m"$hotpinn"\\033[;32m"'.\\necho '\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\necho '\\\\nWi-Fi network password set to "\\033[;37m"$hotpinp"\\033[;32m"'.\\necho '\\\\nTo change these settings, use the "\\033[;37m"sudo hotpi-setwifi"\\033[;32m"' command.\\necho '\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
+echo \#!/bin/sh\\necho\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtscts 3000000 :10.64.64.64 usepeerdns defaultroute noauth persist updetach '&& echo \\\\n'The PPP connection has been started.\\necho > /bin/hotpi-startppp
+echo \#!/bin/sh\\necho\\npoff -a \&\& echo The PPP connection has been stopped.\\necho > /bin/hotpi-stopppp
 chmod 755 /bin/hotpi-help /bin/hotpi-setmodem /bin/hotpi-setwifi /bin/hotpi-startppp /bin/hotpi-stopppp
 hotpi-setmodem
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
@@ -30,14 +28,11 @@ sed -i -e /\\[External\ Storage]/d -e /path\ =\ \\/media\\/pi/d -e /public\ =\ y
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir -p /media/pi
 chmod -R 777 /media/pi
-sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +44\ \\/bin\\/hotpi-installppp-simcom7600\ \|\ sh\\nexit\ 0/ /etc/rc.local
+sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +39\ \\/bin\\/hotpi-installppp-simcom7600\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-sleep 1
-echo \\nHotPi-PPP has been successfully installed on your system...
-sleep 3
-echo \\nFor a command list, use the "\033[;37m"sudo hotpi-help"\033[;32m" command...
-sleep 3
+echo \\nHotPi-PPP has been successfully installed on your system.
+echo \\nFor a command list, use the "\033[;37m"sudo hotpi-help"\033[;32m" command.
 echo \\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot
@@ -50,4 +45,4 @@ chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/tty
 stty -F /dev/ttyAMA0 3000000
 fi
 hotpi-startppp
-sed -i s/tail\ -n\ +44\ \\/bin\\/hotpi-installppp-simcom7600\ \|\ sh/hotpi-startppp/ /etc/rc.local
+sed -i s/tail\ -n\ +39\ \\/bin\\/hotpi-installppp-simcom7600\ \|\ sh/hotpi-startppp/ /etc/rc.local

@@ -11,10 +11,10 @@ echo \#!/bin/sh\\necho\\npppd connect '"'chat "''" atd*99#'"' /dev/ttyAMA0 crtsc
 echo \#!/bin/sh\\necho\\npoff -a \&\& echo The PPP connection has been stopped.\\necho > /bin/hotpi-stopppp
 chmod 755 /bin/hotpi-help /bin/hotpi-setmodem /bin/hotpi-setwifi /bin/hotpi-startppp /bin/hotpi-stopppp
 hotpi-setmodem
+hotpi-setwifi
 sed -i s/console=serial0,115200\ // /boot/cmdline.txt
 sed -i /dtoverlay=pi3-disable-bt/d /boot/config.txt
 echo dtoverlay=pi3-disable-bt >> /boot/config.txt
-hotpi-setwifi
 sed -i -e /allow-hotplug\ br0/d -e /iface\ br0\ inet\ static/d -e /address\ 192.168.0.1/d -e /bridge_ports\ wlan0\ eth0/d /etc/network/interfaces
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces
 sed -i -e /interface=br0/d -e /dhcp-range=192.168.0.2,192.168.0.10,24h/d /etc/dnsmasq.conf

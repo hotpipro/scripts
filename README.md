@@ -1,5 +1,5 @@
 
-HotPi-PPP (GPIO - 3 Mbps)
+HotPi-PPP-SIMCom7600 (GPIO - 3 Mbps)
 
 Command List:
 
@@ -13,7 +13,7 @@ sudo hotpi-stopppp - Stop PPP Connection
 
 ------------------------------------------
 
-HotPi-QMI (USB - 150 Mbps)
+HotPi-QMI-SIMCom7600 (USB - 150 Mbps)
 
 Command List:
 

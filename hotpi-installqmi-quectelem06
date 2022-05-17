@@ -27,6 +27,6 @@ chmod -R 777 /media/pi
 sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startqmi/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\nhotpi-startqmi\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo \\nHotPi-QMI has been successfully installed on your system.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" to view the command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
+echo \\nHotPi-QMI has been installed successfully.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" to view the command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot

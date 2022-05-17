@@ -3,13 +3,13 @@ HotPi-PPP (GPIO - 3 Mbps)
 
 Command List:
 
-sudo hotpi-help - View command list
+sudo hotpi-help - View Command List
 
-sudo hotpi-setwifi - Set Wi-Fi settings
+sudo hotpi-setwifi - Set Wi-Fi Settings
 
-sudo hotpi-startppp - Start PPP connection
+sudo hotpi-startppp - Start PPP Connection
 
-sudo hotpi-stopppp - Stop PPP connection
+sudo hotpi-stopppp - Stop PPP Connection
 
 ------------------------------------------
 
@@ -17,10 +17,10 @@ HotPi-QMI (USB - 150 Mbps)
 
 Command List:
 
-sudo hotpi-help - View command list
+sudo hotpi-help - View Command List
 
-sudo hotpi-setwifi - Set Wi-Fi settings
+sudo hotpi-setwifi - Set Wi-Fi Settings
 
-sudo hotpi-startqmi - Start QMI connection
+sudo hotpi-startqmi - Start QMI Connection
 
-sudo hotpi-stopqmi - Stop QMI connection
+sudo hotpi-stopqmi - Stop QMI Connection

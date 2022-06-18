@@ -1,8 +1,5 @@
 #!/bin/sh
-echo "\033[;32m"\\nHotPi-PPP will now be installed on your system.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to continue...
-read hotpips
-apt update
-apt upgrade -y
+apt update && apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y
 echo \#!/bin/sh\\necho \"\\nHotPi-PPP - SIMCom 7600 \(GPIO - 3 Mbps\)\\n\\nCommand List:\\n\\nsudo hotpi-help - View Command List\\n\\nsudo hotpi-setwifi - Set Wi-Fi Settings\\n\\nsudo hotpi-startppp - Start PPP Connection\\n\\nsudo hotpi-stopppp - Stop PPP Connection\\n\" > /bin/hotpi-help
 echo \#!/bin/sh\\necho '"\\033[;32m"\\\\nEnter your current modem baud rate:\\\\n\\\\nDefault: 115200\\\\n'\\nread hotpibr\\nif '[ $hotpibr = 9600 ] || [ $hotpibr = 19200 ] || [ $hotpibr = 38400 ] || [ $hotpibr = 57600 ] || [ $hotpibr = 115200 ] || [ $hotpibr = 230400 ] || [ $hotpibr = 460800 ] || [ $hotpibr = 921600 ] || [ $hotpibr = 1500000 ] || [ $hotpibr = 2000000 ] || [ $hotpibr = 2500000 ]'\\nthen\\necho '\\\\nMaximizing modem baud rate...\\\\n\\\\nModem baud rate set to: "\\033[;37m"3000000"\\033[;32m"'\\nelif '[ $hotpibr = 3000000 ]'\\nthen\\necho '\\\\nModem baud rate set to: "\\033[;37m"3000000"\\033[;32m"'\\nelse\\necho '\\\\n'Invalid modem baud rate...\\nhotpi-setmodem\\nexit\\nfi\\necho '\\\\nYour modem has been configured successfully.\\\\n\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho '$hotpibr >' /etc/hotpi-baudrate > /bin/hotpi-setmodem

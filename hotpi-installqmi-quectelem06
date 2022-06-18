@@ -1,9 +1,5 @@
 #!/bin/sh
-echo "\033[;32m"\\nHotPi-QMI will now be installed on your system.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to continue...
-read hotpips
-apt update
-apt upgrade -y
-apt install bridge-utils dnsmasq hostapd libqmi-utils ppp resolvconf samba udhcpc xrdp -y
+apt update && apt upgrade -y && apt install bridge-utils dnsmasq hostapd libqmi-utils ppp resolvconf samba udhcpc xrdp -y
 echo \#!/bin/sh\\necho \"\\nHotPi-QMI - Quectel EM06 \(USB - 300 Mbps\)\\n\\nCommand List:\\n\\nsudo hotpi-help - View Command List\\n\\nsudo hotpi-setwifi - Set Wi-Fi Settings\\n\\nsudo hotpi-startqmi - Start QMI Connection\\n\\nsudo hotpi-stopqmi - Stop QMI Connection\\n\" > /bin/hotpi-help
 echo \#!/bin/sh\\necho '"\\033[;32m"\\\\nEnter your Wi-Fi country code:\\\\n\\\\nCanada: CA\\\\nUnited Kingdom: UK\\\\nUnited States: US\\\\n'\\nread hotpicc\\necho '\\\\nWi-Fi country code set to: "\\033[;37m"$hotpicc"\\033[;32m"\\\\n\\\\nCreate your Wi-Fi network name:\\\\n'\\nread hotpinn\\necho '\\\\nWi-Fi network name set to: "\\033[;37m"$hotpinn"\\033[;32m"\\\\n\\\\nCreate your Wi-Fi network password:\\\\n'\\nread hotpinp\\necho '\\\\nWi-Fi network password set to: "\\033[;37m"$hotpinp"\\033[;32m"\\\\n\\\\nYour Wi-Fi network has been configured successfully.\\\\n\\\\nUse "\\033[;37m"sudo hotpi-setwifi"\\033[;32m" to change these settings.\\\\n\\\\nPress "\\033[;37m"ENTER"\\033[;32m"' to continue...\\nread hotpips\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 echo \#!/bin/sh\\nifconfig wwan0 down\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip '&& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid && udhcpc -i wwan0 &&' echo The QMI connection has been started. > /bin/hotpi-startqmi
@@ -27,6 +23,6 @@ chmod -R 777 /media/pi
 sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startqmi/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\nhotpi-startqmi\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo \\nHotPi-QMI has been installed successfully.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" to view the command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
+echo \\nHotPi-QMI has been installed successfully.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" for a command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot

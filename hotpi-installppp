@@ -26,7 +26,7 @@ chmod -R 777 /media/pi
 sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +32\ \\/bin\\/hotpi-installppp-simcom7600\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo \\nHotPi-PPP has been installed successfully.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" to view the command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
+echo \\nHotPi-PPP has been installed successfully.\\n\\nUse "\033[;37m"sudo hotpi-help"\033[;32m" for a command list.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to reboot...
 read hotpips
 reboot
 stty -F /dev/ttyAMA0 $(cat /etc/hotpi-baudrate)

@@ -1,6 +1,4 @@
 #!/bin/sh
-echo "\033[;32m"\\nHotPi-QMI will now be installed on your system.\\n\\nPress "\033[;37m"ENTER"\033[;32m" to continue...
-read hotpips
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y

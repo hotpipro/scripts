@@ -8,7 +8,7 @@ echo \#!/bin/sh\\necho \"sudo hotpi-help - View Command List\\nsudo hotpi-setwif
 echo \#!/bin/sh\\necho Enter your Wi-Fi country code:\\nread hotpicc\\necho Wi-Fi country code set to: '"\\033[;36m"$hotpicc"\\e[0m"\\\\n'Create your Wi-Fi network name:\\nread hotpinn\\necho Wi-Fi network name set to: '"\\033[;36m"$hotpinn"\\e[0m"\\\\n'Create your Wi-Fi network password:\\nread hotpinp\\necho Wi-Fi network password set to: '"\\033[;36m"$hotpinp"\\e[0m"'\\necho \"interface=wlan0\\nbridge=br0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-setwifi
 echo \#!/bin/sh\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip '&& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid && udhcpc -i wwan0 &&' echo The QMI connection has been established. > /bin/hotpi-startqmi
 echo \#!/bin/sh\\nifconfig wwan0 down \&\& echo The QMI connection has been terminated. > /bin/hotpi-stopqmi
-chmod 755 /bin/hotpi-help /bin/hotpi-setwifi /bin/hotpi-startqmi /bin/hotpi-stopqmi
+chmod 755 /bin/hotpi-*
 hotpi-setwifi
 sed -i -e /allow-hotplug\ br0/d -e /iface\ br0\ inet\ static/d -e /address\ 192.168.0.1/d -e /bridge_ports\ wlan0\ eth0/d /etc/network/interfaces
 echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_ports wlan0 eth0 >> /etc/network/interfaces

@@ -1,4 +1,4 @@
-HotPi-PPP
+HotPi-PPP Command List
 
 sudo hotpi-help - View Command List
 
@@ -10,7 +10,7 @@ sudo hotpi-stopppp - Stop PPP Connection
 
 ------------------------------------------
 
-HotPi-QMI
+HotPi-QMI Command List
 
 sudo hotpi-help - View Command List
 

@@ -27,7 +27,7 @@ sed -i -e /\\[External\ Storage]/d -e /path\ =\ \\/media\\/pi/d -e /public\ =\ y
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir -p /media/pi
 chmod -R 777 /media/pi
-sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +35\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
+sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +36\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 echo HotPi-PPP has been installed successfully.\\nUse "\033[;36m"sudo hotpi-help"\e[0m" for a command list.\\nPress "\033[;36m"ENTER"\e[0m" to reboot...
@@ -36,4 +36,4 @@ reboot
 stty -F /dev/ttyAMA0 $(cat /etc/hotpi-baudrate)
 chat '' at+cgdcont=1,'"ipv4v6"' OK at+iprex=3000000 OK > /dev/ttyAMA0 < /dev/ttyAMA0
 hotpi-startppp
-sed -i s/tail\ -n\ +35\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp/ /etc/rc.local
+sed -i s/tail\ -n\ +36\ \\/bin\\/hotpi-installppp\ \|\ sh/hotpi-startppp/ /etc/rc.local

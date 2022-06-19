@@ -1,5 +1,5 @@
 #!/bin/sh
-echo HotPi-PPP will now be installed on your system...
+echo HotPi-PPP will now be installed on your system.\\nPress "\033[;36m"ENTER"\e[0m" to continue...
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ppp resolvconf samba xrdp -y

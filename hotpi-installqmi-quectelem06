@@ -1,4 +1,5 @@
 #!/bin/sh
+echo HotPi-QMI will now be installed on your system...
 apt update
 apt upgrade -y
 apt install bridge-utils dnsmasq hostapd libqmi-utils ppp resolvconf samba udhcpc xrdp -y

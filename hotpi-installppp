@@ -28,7 +28,7 @@ chmod -R 777 /media/pi
 sed -i -e /iptables-restore\ \<\ \\/etc\\/hotpi-iptables/d -e /hotpi-startppp/d -e s/^exit\ 0/iptables-restore\ \<\ \\/etc\\/hotpi-iptables\\ntail\ -n\ +34\ \\/bin\\/hotpi-installppp\ \|\ sh\\nexit\ 0/ /etc/rc.local
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
-echo \\nHotPi-PPP has been installed successfully.\\n\\nUse "\033[;36m"sudo hotpi-help"\e[0m" for a command list.\\n\\nPress "\033[;36m"ENTER"\e[0m" to reboot...
+echo HotPi-PPP has been installed successfully.\\nUse "\033[;36m"sudo hotpi-help"\e[0m" for a command list.\\nPress "\033[;36m"ENTER"\e[0m" to reboot...
 read hotpips
 reboot
 stty -F /dev/ttyAMA0 $(cat /etc/hotpi-baudrate)

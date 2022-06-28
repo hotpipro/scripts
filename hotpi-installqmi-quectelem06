@@ -16,11 +16,11 @@ echo interface=br0\\ndhcp-range=192.168.0.2,192.168.0.10,24h >> /etc/dnsmasq.con
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir -p /media/pi
 chmod -R 777 /media/pi
-stty -F /dev/ttyUSB2 115200
-chat '' at+qcfg='"usbnet"',0 OK > /dev/ttyUSB2 < /dev/ttyUSB2
 iptables -t nat -F
 iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
 iptables-save > /etc/hotpi-iptables
+stty -F /dev/ttyUSB2 115200
+chat '' at+qcfg='"usbnet"',0 OK > /dev/ttyUSB2 < /dev/ttyUSB2
 systemctl unmask hostapd
 systemctl enable hostapd resolvconf
 echo HotPi-QMI has been installed successfully.\\nUse "\033[;36m"sudo hotpi-help"\e[0m" for a command list.\\nPress "\033[;36m"ENTER"\e[0m" to reboot...

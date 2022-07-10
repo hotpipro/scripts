@@ -13,7 +13,7 @@ echo allow-hotplug br0\\niface br0 inet static\\naddress 192.168.0.1\\nbridge_po
 echo interface=br0\\ndhcp-range=192.168.0.2,192.168.0.10,24h >> /etc/dnsmasq.conf
 echo [External Storage]\\npath = /media/pi\\npublic = yes\\nwriteable = yes >> /etc/samba/smb.conf
 mkdir -p /media/pi
-chmod 755 /bin/hotpi-* -R /media/pi
+chmod 755 /bin/hotpi-* /media/pi
 hotpi-setwifi
 iptables -t nat -F
 iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE

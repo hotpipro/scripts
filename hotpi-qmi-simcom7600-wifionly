@@ -3,7 +3,7 @@ echo HotPi-QMI will now be installed on your system.\\nPress "\033[;36m"ENTER"\e
 read hotpips
 apt update
 apt upgrade -y
-apt install bridge-utils dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
+apt install dnsmasq hostapd libqmi-utils resolvconf samba udhcpc xrdp -y
 echo \#!/bin/sh\\necho \"sudo hotpi-help - View Command List\\nsudo hotpi-wifi - Set Wi-Fi Settings\\nsudo hotpi-start - Start QMI Connection\\nsudo hotpi-stop - Stop QMI Connection\" > /bin/hotpi-help
 echo \#!/bin/sh\\necho Enter your Wi-Fi country code:\\nread hotpicc\\necho Wi-Fi country code set to: '"\\033[;36m"$hotpicc"\\e[0m"\\\\n'Create your Wi-Fi network name:\\nread hotpinn\\necho Wi-Fi network name set to: '"\\033[;36m"$hotpinn"\\e[0m"\\\\n'Create your Wi-Fi network password:\\nread hotpinp\\necho Wi-Fi network password set to: '"\\033[;36m"$hotpinp"\\e[0m"'\\necho \"interface=wlan0\\ncountry_code=\$hotpicc\\nieee80211ac=1\\nwmm_enabled=1\\nhw_mode=a\\nchannel=36\\nht_capab=[HT40+]\\nssid=\$hotpinn\\nwpa_passphrase=\$hotpinp\\nwpa=2\\nwpa_key_mgmt=WPA-PSK\\nrsn_pairwise=CCMP\" \> /etc/hostapd/hostapd.conf > /bin/hotpi-wifi
 echo \#!/bin/sh\\nifconfig wwan0 down\\nqmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online\\nqmicli -d /dev/cdc-wdm0 -E raw-ip '&& qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid && udhcpc -i wwan0 &&' echo The QMI connection has been established. > /bin/hotpi-start

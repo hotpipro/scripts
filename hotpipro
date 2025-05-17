@@ -376,7 +376,7 @@ echo
 sleep 1
 hotpimount
 exit
-elif [ $(lsblk -n -o MOUNTPOINT /dev/$hotpidn > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpidn)" ]
+elif [ $(lsblk -n -o MOUNTPOINT /dev/"$hotpidn" > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpidn)" ]
 then
 echo "
 Your USB storage device is being mounted...
@@ -432,7 +432,7 @@ echo "
 Your USB storage device has been unmounted.
 "
 sleep 1
-elif [ $(lsblk -n -o MOUNTPOINT /dev/$hotpidn > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpidn)" ]
+elif [ $(lsblk -n -o MOUNTPOINT /dev/"$hotpidn" > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpidn)" ]
 then
 echo "
 Your USB storage device has already been unmounted.

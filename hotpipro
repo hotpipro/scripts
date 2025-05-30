@@ -181,7 +181,7 @@ echo "
 Your Wi-Fi network password must have 8 to 63 characters...
 "
 sleep 1
-hotpipass
+hotpipassword
 exit
 fi
 sudo sed -i /wpa_passphrase=.*/d /etc/hostapd/hostapd.conf
@@ -247,7 +247,7 @@ echo "
 You have entered an invalid entry...
 "
 sleep 1
-hotpistand
+hotpistandard
 exit
 fi
 sleep 1' > /bin/hotpistandard

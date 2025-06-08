@@ -1,0 +1,626 @@
+#!/bin/sh
+
+###########################################################################################################################################################
+
+# HotPi Pro - Mobile Hotspot & Media Server +Emulation Station (SIMCom SIM7600/Quectel EC25 - Qualcomm MSM Interface)
+
+###########################################################################################################################################################
+
+# INITIALIZATION
+
+echo "
+HotPi Pro is being installed on your system...
+"
+sleep 1
+
+###########################################################################################################################################################
+
+# SOFTWARE UPDATES
+
+apt update && sudo apt upgrade -y
+apt install bridge-utils dnsmasq hostapd ifupdown iptables libqmi-utils pix-plym-splash plymouth plymouth-themes resolvconf samba udhcpc udiskie udisks2 xrdp -y
+wget https://raw.githubusercontent.com/gbrideau/scripts/main/hotpipro.png -O /usr/share/plymouth/themes/pix/splash.png
+
+###########################################################################################################################################################
+
+# NETWORK SETTINGS
+
+	# Network Bridge
+
+		# Gateway Node
+
+sed -i -e /allow-hotplug\ br0/d -e /iface\ br0\ inet\ static/d -e /address\ 192.168.0.1/d -e /bridge_ports\ wlan0\ eth0/d /etc/network/interfaces
+echo 'allow-hotplug br0
+iface br0 inet static
+address 192.168.0.1
+bridge_ports wlan0 eth0' >> /etc/network/interfaces
+
+		# DHCP Server
+
+sed -i -e /interface=br0/d -e /dhcp-range=192.168.0.2,192.168.0.254,24h/d /etc/dnsmasq.conf
+echo 'interface=br0
+dhcp-range=192.168.0.2,192.168.0.254,24h' >> /etc/dnsmasq.conf
+
+		# Packet Forwarding
+
+sed -i /^net.ipv4.ip_forward=1/d /etc/sysctl.conf
+echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
+
+		# Packet Filtering
+
+iptables -t nat -F
+iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
+iptables-save > /etc/hotpitables
+
+	# Wi-Fi Network
+
+echo 'interface=wlan0
+bridge=br0
+ieee80211ac=1
+channel=36
+hw_mode=a
+ht_capab=[HT40+]
+wmm_enabled=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP' > /etc/hostapd/hostapd.conf
+
+	# Network-Attached Storage
+
+echo 'sudo sed -i -e '"'"'/\[BIOS]/,$d'"'"' -e '"'"'/\[RetroPie]/,$d'"'"' /etc/samba/smb.conf
+sudo sh -c "echo '"'"'[RetroPie]
+path = /home/RetroPie
+public = yes
+writeable = yes
+[USB Storage]
+path = /media/$USER
+public = yes
+writeable = yes'"'"' >> /etc/samba/smb.conf"
+sudo mkdir -p /home/RetroPie /media/$USER
+sudo chmod -R 777 /home/RetroPie /media/$USER' > /etc/profile.d/hotpisamba.sh
+
+###########################################################################################################################################################
+
+# MEDIA SETTINGS
+
+	# Splash Screen
+
+sed -i -e s/\ plymouth.ignore-serial-consoles// -e s/\ splash// /boot/firmware/cmdline.txt
+sed -i s/$/\ plymouth.ignore-serial-consoles\ splash/ /boot/firmware/cmdline.txt
+echo '[Unit]
+Before=display-manager.service plymouth-quit.service
+[Service]
+Type=oneshot
+ExecStart=sleep 3
+[Install]
+WantedBy=plymouth-start.service' > /etc/systemd/system/hotpisplash.service
+
+###########################################################################################################################################################
+
+# POWER SETTINGS
+
+	# Power Button
+
+sed -i /dtoverlay=gpio-shutdown,debounce=1000/d /boot/firmware/config.txt
+echo dtoverlay=gpio-shutdown,debounce=1000 >> /boot/firmware/config.txt
+
+	# USB Ports
+
+sed -i /usb_max_current_enable=1/d /boot/firmware/config.txt
+echo usb_max_current_enable=1 >> /boot/firmware/config.txt
+
+###########################################################################################################################################################
+
+# USER COMMANDS
+
+	# Set Wi-Fi Network Country Code
+
+echo '#!/bin/sh
+echo "
+Enter your Wi-Fi network country code:
+(type \\e[93mlist\\e[0m for a detailed list of available Wi-Fi network country codes)
+"
+read hotpiue
+hotpiue=$(echo $hotpiue | sed '"'s/.*/\U&/'"')
+if [ "$hotpiue" = LIST ]
+then
+echo "
+AF (Afghanistan)				PS (Gaza Strip/West Bank)			NO (Norway)
+AX (Aland Islands)				GE (Georgia)					OM (Oman)
+AL (Albania)					DE (Germany)					PK (Pakistan)
+DZ (Algeria)					GH (Ghana)					PW (Palau)
+AS (American Samoa)				GI (Gibraltar)					PA (Panama)
+AD (Andorra)					GR (Greece)					PG (Papua New Guinea)
+AO (Angola)					GL (Greenland)					PY (Paraguay)
+AI (Anguilla)					GD (Grenada)					PE (Peru)
+AQ (Antarctica)					GP (Guadeloupe)					PH (Philippines)
+AG (Antigua and Barbuda)			GU (Guam)					PN (Pitcairn Islands)
+AR (Argentina)					GT (Guatemala)					PL (Poland)
+AM (Armenia)					GG (Guernsey)					PT (Portugal)
+AW (Aruba)					GN (Guinea)					PR (Puerto Rico)
+AC (Ascension Island)				GW (Guinea-Bissau)				QA (Qatar)
+AU (Australia)					GY (Guyana)					CG (Republic of the Congo)
+AT (Austria)					HT (Haiti)					RE (Reunion)
+AZ (Azerbaijan)					HM (Heard Island and McDonald Islands)		RO (Romania)
+BH (Bahrain)					VA (Holy See (Vatican City))			RU (Russia)
+BD (Bangladesh)					HN (Honduras)					RW (Rwanda)
+BB (Barbados)					HK (Hong Kong)					BL (Saint Barthelemy)
+BY (Belarus)					HU (Hungary)					SH (Saint Helena, Ascension, and Tristan da Cunha)
+BE (Belgium)					IS (Iceland)					KN (Saint Kitts and Nevis)
+BZ (Belize)					IN (India)					LC (Saint Lucia)
+BJ (Benin)					ID (Indonesia)					MF (Saint Martin)
+BM (Bermuda)					IR (Iran)					PM (Saint Pierre and Miquelon)
+BT (Bhutan)					IQ (Iraq)					VC (Saint Vincent and the Grenadines)
+BO (Bolivia)					IE (Ireland)					WS (Samoa)
+BA (Bosnia and Herzegovina)			IM (Isle of Man)				SM (San Marino)
+BW (Botswana)					IL (Israel)					ST (Sao Tome and Principe)
+BV (Bouvet Island)				IT (Italy)					SA (Saudi Arabia)
+BR (Brazil)					JM (Jamaica)					SN (Senegal)
+IO (British Indian Ocean Territory)		JP (Japan)					RS (Serbia)
+VG (British Virgin Islands			JE (Jersey)					SC (Seychelles)
+BN (Brunei)					JO (Jordan)					SL (Sierra Leone)
+BG (Bulgaria)					KZ (Kazakhstan)					SG (Singapore)
+BF (Burkina Faso)				KE (Kenya)					SX (Sint Maarten)
+MM (Burma)					KI (Kiribati)					SK (Slovakia)
+BI (Burundi)					XK (Kosovo)					SI (Slovenia)
+CV (Cabo Verde)					KW (Kuwait)					SB (Solomon Islands)
+KH (Cambodia)					KG (Kyrgyzstan)					SO (Somalia)
+CM (Cameroon)					LA (Laos)					ZA (South Africa)
+CA (Canada)					LV (Latvia)					KR (South Korea)
+KY (Cayman Islands)				LB (Lebanon)					SS (South Sudan)
+CF (Central African Republic)			LS (Lesotho)					SU (Soviet Union)
+TD (Chad)					LR (Liberia)					ES (Spain)
+CL (Chile)					LY (Libya)					LK (Sri Lanka)
+CN (China)					LI (Liechtenstein)				SD (Sudan)
+CX (Christmas Island)				LT (Lithuania)					SR (Suriname)
+CC (Cocos (Keeling) Islands)			LU (Luxembourg)					SJ (Svalbard)
+CO (Colombia)					MO (Macau)					SE (Sweden)
+KM (Comoros)					MG (Madagascar)					CH (Switzerland)
+CK (Cook Islands)				MW (Malawi)					SY (Syria)
+CR (Costa Rica)					MY (Malaysia)					TW (Taiwan)
+CI (Cote d'"'"'Ivoire)				MV (Maldives)					TJ (Tajikistan)
+HR (Croatia)					ML (Mali)					TZ (Tanzania)
+CU (Cuba)					MT (Malta)					TH (Thailand)
+CW (Curacao)					MH (Marshall Islands)				BS (The Bahamas)
+CY (Cyprus)					MQ (Martinique)					GM (The Gambia)
+CZ (Czechia)					MR (Mauritania)					TL (Timor-Leste)
+CD (Democratic Republic of the Congo)		MU (Mauritius)					TG (Togo)
+DK (Denmark)					YT (Mayotte)					TK (Tokelau)
+DJ (Djibouti)					MX (Mexico)					TO (Tonga)
+DM (Dominica)					MD (Moldova)					TT (Trinidad and Tobago)
+DO (Dominican Republic)				MC (Monaco)					TN (Tunisia)
+EC (Ecuador)					MN (Mongolia)					TR (Turkey (Turkiye))
+EG (Egypt)					ME (Montenegro)					TM (Turkmenistan)
+SV (El Salvador)				MS (Montserrat)					TC (Turks and Caicos Islands)
+GQ (Equatorial Guinea)				MA (Morocco)					TV (Tuvalu)
+ER (Eritrea)					MZ (Mozambique)					UG (Uganda)
+EE (Estonia)					NA (Namibia)					UA (Ukraine)
+SZ (Eswatini)					NR (Nauru)					AE (United Arab Emirates)
+ET (Ethiopia)					NP (Nepal)					UK (United Kingdom)
+EU (European Union)				NL (Netherlands)				US (United States)
+FK (Falkland Islands (Islas Malvinas))		NC (New Caledonia)				UY (Uruguay)
+FO (Faroe Islands)				NZ (New Zealand)				UZ (Uzbekistan)
+FM (Federated States of Micronesia)		NI (Nicaragua)					VU (Vanuatu)
+FJ (Fiji)					NE (Niger)					VE (Venezuela)
+FI (Finland)					NG (Nigeria)					VN (Vietnam)
+FR (France)					NU (Niue)					VI (Virgin Islands)
+GF (French Guiana)				NF (Norfolk Island)				WF (Wallis and Futuna)
+PF (French Polynesia)				KP (North Korea)				YE (Yemen)
+TF (French Southern and Antarctic Lands)	MK (North Macedonia)				ZM (Zambia)
+GA (Gabon)					MP (Northern Mariana Islands)			ZW (Zimbabwe)
+"
+sleep 1
+hotpiwc
+exit
+elif [ "$hotpiue" = AC -o "$hotpiue" = AD -o "$hotpiue" = AE -o "$hotpiue" = AF -o "$hotpiue" = AG -o "$hotpiue" = AI -o "$hotpiue" = AL -o "$hotpiue" = AM -o "$hotpiue" = AO -o "$hotpiue" = AQ -o "$hotpiue" = AR -o "$hotpiue" = AS -o "$hotpiue" = AT -o "$hotpiue" = AU -o "$hotpiue" = AW -o "$hotpiue" = AX -o "$hotpiue" = AZ -o "$hotpiue" = BA -o "$hotpiue" = BB -o "$hotpiue" = BD -o "$hotpiue" = BE -o "$hotpiue" = BF -o "$hotpiue" = BG -o "$hotpiue" = BH -o "$hotpiue" = BI -o "$hotpiue" = BJ -o "$hotpiue" = BL -o "$hotpiue" = BM -o "$hotpiue" = BN -o "$hotpiue" = BO -o "$hotpiue" = BR -o "$hotpiue" = BS -o "$hotpiue" = BT -o "$hotpiue" = BV -o "$hotpiue" = BW -o "$hotpiue" = BY -o "$hotpiue" = BZ -o "$hotpiue" = CA -o "$hotpiue" = CC -o "$hotpiue" = CD -o "$hotpiue" = CF -o "$hotpiue" = CG -o "$hotpiue" = CH -o "$hotpiue" = CI -o "$hotpiue" = CK -o "$hotpiue" = CL -o "$hotpiue" = CM -o "$hotpiue" = CN -o "$hotpiue" = CO -o "$hotpiue" = CR -o "$hotpiue" = CU -o "$hotpiue" = CV -o "$hotpiue" = CW -o "$hotpiue" = CX -o "$hotpiue" = CY -o "$hotpiue" = CZ -o "$hotpiue" = DE -o "$hotpiue" = DJ -o "$hotpiue" = DK -o "$hotpiue" = DM -o "$hotpiue" = DO -o "$hotpiue" = DZ -o "$hotpiue" = EC -o "$hotpiue" = EE -o "$hotpiue" = EG -o "$hotpiue" = ER -o "$hotpiue" = ES -o "$hotpiue" = ET -o "$hotpiue" = EU -o "$hotpiue" = FI -o "$hotpiue" = FJ -o "$hotpiue" = FK -o "$hotpiue" = FM -o "$hotpiue" = FO -o "$hotpiue" = FR -o "$hotpiue" = GA -o "$hotpiue" = GD -o "$hotpiue" = GE -o "$hotpiue" = GF -o "$hotpiue" = GG -o "$hotpiue" = GH -o "$hotpiue" = GI -o "$hotpiue" = GL -o "$hotpiue" = GM -o "$hotpiue" = GN -o "$hotpiue" = GP -o "$hotpiue" = GQ -o "$hotpiue" = GR -o "$hotpiue" = GT -o "$hotpiue" = GU -o "$hotpiue" = GW -o "$hotpiue" = GY -o "$hotpiue" = HK -o "$hotpiue" = HM -o "$hotpiue" = HN -o "$hotpiue" = HR -o "$hotpiue" = HT -o "$hotpiue" = HU -o "$hotpiue" = ID -o "$hotpiue" = IE -o "$hotpiue" = IL -o "$hotpiue" = IM -o "$hotpiue" = IN -o "$hotpiue" = IO -o "$hotpiue" = IQ -o "$hotpiue" = IR -o "$hotpiue" = IS -o "$hotpiue" = IT -o "$hotpiue" = JE -o "$hotpiue" = JM -o "$hotpiue" = JO -o "$hotpiue" = JP -o "$hotpiue" = KE -o "$hotpiue" = KG -o "$hotpiue" = KH -o "$hotpiue" = KI -o "$hotpiue" = KM -o "$hotpiue" = KN -o "$hotpiue" = KP -o "$hotpiue" = KR -o "$hotpiue" = KW -o "$hotpiue" = KY -o "$hotpiue" = KZ -o "$hotpiue" = LA -o "$hotpiue" = LB -o "$hotpiue" = LC -o "$hotpiue" = LI -o "$hotpiue" = LK -o "$hotpiue" = LR -o "$hotpiue" = LS -o "$hotpiue" = LT -o "$hotpiue" = LU -o "$hotpiue" = LV -o "$hotpiue" = LY -o "$hotpiue" = MA -o "$hotpiue" = MC -o "$hotpiue" = MD -o "$hotpiue" = ME -o "$hotpiue" = MF -o "$hotpiue" = MG -o "$hotpiue" = MH -o "$hotpiue" = MK -o "$hotpiue" = ML -o "$hotpiue" = MM -o "$hotpiue" = MN -o "$hotpiue" = MO -o "$hotpiue" = MP -o "$hotpiue" = MQ -o "$hotpiue" = MR -o "$hotpiue" = MS -o "$hotpiue" = MT -o "$hotpiue" = MU -o "$hotpiue" = MV -o "$hotpiue" = MW -o "$hotpiue" = MX -o "$hotpiue" = MY -o "$hotpiue" = MZ -o "$hotpiue" = NA -o "$hotpiue" = NC -o "$hotpiue" = NE -o "$hotpiue" = NF -o "$hotpiue" = NG -o "$hotpiue" = NI -o "$hotpiue" = NL -o "$hotpiue" = NO -o "$hotpiue" = NP -o "$hotpiue" = NR -o "$hotpiue" = NU -o "$hotpiue" = NZ -o "$hotpiue" = OM -o "$hotpiue" = PA -o "$hotpiue" = PE -o "$hotpiue" = PF -o "$hotpiue" = PG -o "$hotpiue" = PH -o "$hotpiue" = PK -o "$hotpiue" = PL -o "$hotpiue" = PM -o "$hotpiue" = PN -o "$hotpiue" = PR -o "$hotpiue" = PS -o "$hotpiue" = PT -o "$hotpiue" = PW -o "$hotpiue" = PY -o "$hotpiue" = QA -o "$hotpiue" = RE -o "$hotpiue" = RO -o "$hotpiue" = RS -o "$hotpiue" = RU -o "$hotpiue" = RW -o "$hotpiue" = SA -o "$hotpiue" = SB -o "$hotpiue" = SC -o "$hotpiue" = SD -o "$hotpiue" = SE -o "$hotpiue" = SG -o "$hotpiue" = SH -o "$hotpiue" = SI -o "$hotpiue" = SJ -o "$hotpiue" = SK -o "$hotpiue" = SL -o "$hotpiue" = SM -o "$hotpiue" = SN -o "$hotpiue" = SO -o "$hotpiue" = SR -o "$hotpiue" = SS -o "$hotpiue" = ST -o "$hotpiue" = SU -o "$hotpiue" = SV -o "$hotpiue" = SX -o "$hotpiue" = SY -o "$hotpiue" = SZ -o "$hotpiue" = TC -o "$hotpiue" = TD -o "$hotpiue" = TF -o "$hotpiue" = TG -o "$hotpiue" = TH -o "$hotpiue" = TJ -o "$hotpiue" = TK -o "$hotpiue" = TL -o "$hotpiue" = TM -o "$hotpiue" = TN -o "$hotpiue" = TO -o "$hotpiue" = TR -o "$hotpiue" = TT -o "$hotpiue" = TV -o "$hotpiue" = TW -o "$hotpiue" = TZ -o "$hotpiue" = UA -o "$hotpiue" = UG -o "$hotpiue" = UK -o "$hotpiue" = US -o "$hotpiue" = UY -o "$hotpiue" = UZ -o "$hotpiue" = VA -o "$hotpiue" = VC -o "$hotpiue" = VE -o "$hotpiue" = VG -o "$hotpiue" = VI -o "$hotpiue" = VN -o "$hotpiue" = VU -o "$hotpiue" = WF -o "$hotpiue" = WS -o "$hotpiue" = XK -o "$hotpiue" = YE -o "$hotpiue" = YT -o "$hotpiue" = ZA -o "$hotpiue" = ZM -o "$hotpiue" = ZW ]
+then
+sudo sed -i /country_code=.*/d /etc/hostapd/hostapd.conf
+sudo sh -c "echo country_code=$hotpiue >> /etc/hostapd/hostapd.conf"
+echo "
+Your Wi-Fi network country code has been set to: \\e[36m$hotpiue\\e[0m
+"
+sleep 1
+else
+echo "
+You have entered an invalid entry...
+"
+sleep 1
+hotpiwc
+exit
+fi' > /bin/hotpiwc
+
+	# Set Wi-Fi Network Name
+
+echo '#!/bin/sh
+echo "
+Create your Wi-Fi network name:
+(1 to 32 characters)
+"
+read hotpiue
+if [ ${#hotpiue} -lt 1 -o ${#hotpiue} -gt 32 ]
+then
+echo "
+Your Wi-Fi network name must have 1 to 32 characters...
+"
+sleep 1
+hotpiwn
+exit
+fi
+sudo sed -i /ssid=.*/d /etc/hostapd/hostapd.conf
+sudo sh -c "echo ssid=$hotpiue >> /etc/hostapd/hostapd.conf"
+echo "
+Your Wi-Fi network name has been set to: \\e[36m$hotpiue\\e[0m
+"
+sleep 1' > /bin/hotpiwn
+
+	# Set Wi-Fi Network Password
+
+echo '#!/bin/sh
+echo "
+Create your Wi-Fi network password:
+(8 to 63 characters)
+"
+read hotpiue
+if [ ${#hotpiue} -lt 8 -o ${#hotpiue} -gt 63 ]
+then
+echo "
+Your Wi-Fi network password must have 8 to 63 characters...
+"
+sleep 1
+hotpiwp
+exit
+fi
+sudo sed -i /wpa_passphrase=.*/d /etc/hostapd/hostapd.conf
+sudo sh -c "echo wpa_passphrase=$hotpiue >> /etc/hostapd/hostapd.conf"
+echo "
+Your Wi-Fi network password has been set to: \\e[36m$hotpiue\\e[0m
+"
+sleep 1' > /bin/hotpiwp
+
+	# Set Composite Video Standard
+
+echo '#!/bin/sh
+echo "
+Enter your composite video standard:
+(NTSC, Japanese NTSC, PAL, Brazilian PAL, Progressive Scan NTSC, Progressive Scan PAL)
+"
+read hotpiue
+hotpiue=$(echo $hotpiue | sed '"'s/.*/\L&/'"')
+if [ "$hotpiue" = ntsc ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=0 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mNTSC\\e[0m
+"
+elif [ "$hotpiue" = "japanese ntsc" ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=1 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mJapanese NTSC\\e[0m
+"
+elif [ "$hotpiue" = pal ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=2 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mPAL\\e[0m
+"
+elif [ "$hotpiue" = "brazilian pal" ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=3 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mBrazilian PAL\\e[0m
+"
+elif [ "$hotpiue" = "progressive scan ntsc" ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=16 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mProgressive Scan NTSC\\e[0m
+"
+elif [ "$hotpiue" = "progressive scan pal" ]
+then
+sudo sed -i /^sdtv_mode=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_mode=18 >> /boot/config.txt"
+echo "
+Your composite video standard has been set to: \\e[36mProgressive Scan PAL\\e[0m
+"
+else
+echo "
+You have entered an invalid entry...
+"
+sleep 1
+hotpics
+exit
+fi
+sleep 1' > /bin/hotpics
+
+	# Set Composite Video Aspect Ratio
+
+echo '#!/bin/sh
+echo "
+Enter your composite video aspect ratio:
+(4:3, 14:9, 16:9)
+"
+read hotpiue
+if [ "$hotpiue" = 4:3 ]
+then
+sudo sed -i /^sdtv_aspect=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_aspect=1 >> /boot/config.txt"
+elif [ "$hotpiue" = 14:9 ]
+then
+sudo sed -i /^sdtv_aspect=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_aspect=2 >> /boot/config.txt"
+elif [ "$hotpiue" = 16:9 ]
+then
+sudo sed -i /^sdtv_aspect=.*/d /boot/config.txt
+sudo sh -c "echo sdtv_aspect=3 >> /boot/config.txt"
+else
+echo "
+You have entered an invalid entry...
+"
+sleep 1
+hotpicr
+exit
+fi
+echo "
+Your composite video aspect ratio has been set to: \\e[36m$hotpiue\\e[0m
+"
+sleep 1' > /bin/hotpicr
+
+	# Establish Internet Connection
+
+echo '#!/bin/sh
+if [ $(wget -q --spider google.com ; echo $?) != 0 ]
+then
+echo "
+Your internet connection is being established...
+"
+sleep 1
+sudo iptables-restore < /etc/hotpitables
+sudo qmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online
+sudo qmicli -d /dev/cdc-wdm0 -E raw-ip &&
+sudo qmicli -d /dev/cdc-wdm0 -p --wds-start-network=ip-type=4 --client-no-release-cid &&
+sudo udhcpc -i wwan0 &&
+sleep 1 &&
+echo "
+Your internet connection has been established.
+"
+if [ $(wget -q --spider google.com ; echo $?) != 0 ]
+then
+sleep 1
+echo "
+Your internet connection could not be established.
+"
+fi
+elif [ $(wget -q --spider google.com ; echo $?) = 0 ]
+then
+echo "
+Your internet connection has already been established...
+"
+sleep 1
+echo "
+Would you like to reestablish your internet connection?
+(yes/no)
+"
+read hotpiue
+hotpiue=$(echo $hotpiue | sed '"'s/.*/\L&/'"')
+if [ "$hotpiue" = yes ]
+then
+sudo ifconfig wwan0 down
+hotpiec
+exit
+elif [ "$hotpiue" = no ]
+then
+echo "
+Your internet connection has been resumed.
+"
+else
+echo "
+You have entered an invalid entry...
+"
+sleep 0.5
+hotpiec
+exit
+fi
+fi' > /bin/hotpiec
+
+	# Terminate Internet Connection
+
+echo '#!/bin/sh
+if [ $(wget -q --spider google.com ; echo $?) = 0 ]
+then
+sudo ifconfig wwan0 down
+echo "
+Your internet connection has been terminated.
+"
+elif [ $(wget -q --spider google.com ; echo $?) != 0 ]
+then
+sudo ifconfig wwan0 down
+echo "
+Your internet connection has not been established.
+"
+fi' > /bin/hotpitc
+
+	# Mount USB Storage Device
+
+echo '#!/bin/sh
+echo "
+Enter your USB storage device name:
+(type \\e[93mlist\\e[0m for a detailed list of available USB storage device names)
+"
+read hotpiue
+hotpiue=$(echo $hotpiue | sed '"'s/.*/\L&/'"')
+if [ "$hotpiue" = list ]
+then
+echo
+lsblk -o NAME,SIZE,MOUNTPOINT | sed /mmcblk0/d
+echo
+sleep 1
+hotpimd
+exit
+elif [ $(lsblk -n -o MOUNTPOINT /dev/$hotpiue > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpiue)" ]
+then
+echo "
+Your USB storage device is being mounted...
+"
+sleep 1
+udisksctl mount -b /dev/$hotpiue
+sleep 1
+echo "
+Your USB storage device has been mounted.
+"
+sleep 1
+elif [ -n "$(lsblk -n -o MOUNTPOINT /dev/$hotpiue 2> /dev/null)" ]
+then
+echo "
+Your USB storage device has already been mounted.
+"
+sleep 1
+else
+echo "
+You have entered an invalid entry...
+"
+sleep 1
+hotpimd
+exit
+fi' > /bin/hotpimd
+
+	# Unmount USB Storage Device
+
+echo '#!/bin/sh
+echo "
+Enter your USB storage device name:
+(type \\e[93mlist\\e[0m for a detailed list of available USB storage device names)
+"
+read hotpiue
+hotpiue=$(echo $hotpiue | sed '"'s/.*/\L&/'"')
+if [ "$hotpiue" = list ]
+then
+echo
+lsblk -o NAME,SIZE,MOUNTPOINT | sed /mmcblk0/d
+echo
+sleep 1
+hotpiud
+exit
+elif [ -n "$(lsblk -n -o MOUNTPOINT /dev/$hotpiue 2> /dev/null)" ]
+then
+echo "
+Your USB storage device is being unmounted...
+"
+sleep 1
+udisksctl unmount -b /dev/$hotpiue
+sleep 1
+echo "
+Your USB storage device has been unmounted.
+"
+sleep 1
+elif [ $(lsblk -n -o MOUNTPOINT /dev/$hotpiue > /dev/null 2>&1 ; echo $?) = 0 ] && [ -z "$(lsblk -n -o MOUNTPOINT /dev/$hotpiue)" ]
+then
+echo "
+Your USB storage device has already been unmounted.
+"
+sleep 1
+else
+echo "
+Your have entered an invalid entry...
+"
+sleep 1
+hotpiud
+exit
+fi' > /bin/hotpiud
+
+	# Launch Emulation Station
+
+echo '#!/bin/sh
+emulationstation' > /bin/hotpiem
+
+	# Reboot Raspberry Pi
+
+echo '#!/bin/sh
+sudo reboot' > /bin/hotpirp
+
+	# Shutdown Raspberry Pi
+
+echo '#!/bin/sh
+sudo shutdown now' > /bin/hotpisp
+
+	# View User Command List
+
+echo '#!/bin/sh
+echo "
+COMMAND            DESCRIPTION
+
+\\e[93mhotpiwc\\e[0m            Set Wi-Fi Network Country Code
+\\e[93mhotpiwn\\e[0m            Set Wi-Fi Network Name
+\\e[93mhotpiwp\\e[0m            Set Wi-Fi Network Password
+\\e[93mhotpics\\e[0m            Set Composite Video Standard
+\\e[93mhotpicr\\e[0m            Set Composite Video Aspect Ratio
+\\e[93mhotpiec\\e[0m            Establish Internet Connection
+\\e[93mhotpitc\\e[0m            Terminate Internet Connection
+\\e[93mhotpimd\\e[0m            Mount USB Storage Device
+\\e[93mhotpiud\\e[0m            Unmount USB Storage Device
+\\e[93mhotpiem\\e[0m            Launch Emulation Station
+\\e[93mhotpirp\\e[0m            Reboot Raspberry Pi
+\\e[93mhotpisp\\e[0m            Shutdown Raspberry Pi
+\\e[93mhotpicl\\e[0m            View User Command List
+"' > /bin/hotpicl
+
+###########################################################################################################################################################
+
+# USER PERMISSIONS
+
+	# User Commands
+
+chmod -R 777 /bin/hotpi*
+
+	# USB Mounting
+
+sed -i -e 87s/auth_admin/yes/ -e 89s/auth_admin_keep/yes/ /usr/share/polkit-1/actions/org.freedesktop.UDisks2.policy
+
+###########################################################################################################################################################
+
+# AUTOMATION
+
+	# Internet Connection
+
+echo '[Service]
+ExecStart=hotpiec' > /etc/systemd/system/hotpistart.service
+echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN+="/bin/systemctl start hotpistart"
+ATTR{idVendor}=="2c7c", ATTR{idProduct}=="0125", RUN+="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+
+	# USB Mounting
+
+echo '[Service]
+ExecStart=udiskie -N -F' > /etc/systemd/user/hotpimount.service
+echo systemctl --user start hotpimount > /etc/profile.d/hotpimount.sh
+
+###########################################################################################################################################################
+
+# EXECUTION
+
+hotpiwc
+hotpiwn
+hotpiwp
+systemctl unmask hostapd
+systemctl enable hostapd hotpisplash resolvconf
+
+###########################################################################################################################################################
+
+# FINALIZATION
+
+echo "
+HotPi Pro has been installed on your system...
+(use \e[93mhotpicl\e[0m for a detailed list of available user commands)
+"
+sleep 1
+echo "
+Press ENTER to reboot...
+"
+read hotpiue
+reboot
+
+###########################################################################################################################################################

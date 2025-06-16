@@ -3,7 +3,7 @@
 apt update && apt upgrade -y
 apt install bridge-utils dnsmasq hostapd ifupdown iptables libqmi-utils pix-plym-splash plymouth plymouth-themes resolvconf samba udhcpc udiskie udisks2 xrdp -y
 apt purge dhcpcd modemmanager -y
-wget https://raw.githubusercontent.com/gbrideau/scripts/main/hotpiprolite.png -O /usr/share/plymouth/themes/pix/splash.png
+wget https://raw.githubusercontent.com/hotpipro/scripts/main/hotpiprolite.png -O /usr/share/plymouth/themes/pix/splash.png
 
 echo '#!/bin/sh
 echo Enter Wi-Fi country code:

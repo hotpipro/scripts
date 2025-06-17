@@ -23,8 +23,7 @@ sudo sed -i /wpa_passphrase=.*/d /etc/hostapd/hostapd.conf
 sudo sh -c "echo wpa_passphrase=$var >> /etc/hostapd/hostapd.conf"' > /bin/hotpipassword
 
 echo '#!/bin/sh
-sudo ifconfig wwan0 down
-sudo qmicli -d /dev/cdc-wdm0 --wds-noop --client-cid=17 2> /dev/null
+hotpistop
 sudo qmicli -d /dev/cdc-wdm0 -E raw-ip
 sudo qmicli -d /dev/cdc-wdm0 --wds-start-network=ip-type=4 --client-no-release-cid
 sudo udhcpc -i wwan0' > /bin/hotpistart

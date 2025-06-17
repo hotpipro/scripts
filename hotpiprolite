@@ -99,9 +99,8 @@ path = /media/$USER
 public = yes
 writeable = yes'"'"' >> /etc/samba/smb.conf"' > /etc/profile.d/hotpisamba.sh
 
-sed -i -e /dtoverlay=gpio-shutdown,debounce=1000/d -e /usb_max_current_enable=1/d /boot/firmware/config.txt
-echo 'dtoverlay=gpio-shutdown,debounce=1000
-usb_max_current_enable=1' >> /boot/firmware/config.txt
+sed -i /usb_max_current_enable=1/d /boot/firmware/config.txt
+echo usb_max_current_enable=1 >> /boot/firmware/config.txt
 
 echo '[Service]
 ExecStart=hotpistart' > /etc/systemd/system/hotpistart.service

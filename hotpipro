@@ -472,7 +472,7 @@ COMMAND                 DESCRIPTION
 
 	# User Commands
 
-chmod -R 777 /bin/hotpi*
+chmod 777 /bin/hotpi*
 
 	# USB Mounting
 

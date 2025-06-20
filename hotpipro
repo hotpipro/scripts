@@ -369,7 +369,7 @@ echo "
 Your storage device is being mounted...
 "
 sleep 1
-udisksctl mount -b /dev/$var
+sudo udisksctl mount -b /dev/$var
 sleep 1
 echo "
 Your storage device has been mounted.
@@ -411,7 +411,7 @@ echo "
 Your storage device is being unmounted...
 "
 sleep 1
-udisksctl unmount -b /dev/$var
+sudo udisksctl unmount -b /dev/$var
 sleep 1
 echo "
 Your storage device has been unmounted.

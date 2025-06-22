@@ -1,0 +1,79 @@
+#!/bin/sh
+
+echo '#!/bin/sh
+sudo qmicli -d /dev/cdc-wdm0 -E raw-ip
+sudo qmicli -d /dev/cdc-wdm0 --wds-start-network=ip-type=4 --client-no-release-cid
+sudo udhcpc -i wwan0' > /bin/hotpistart
+
+echo '#!/bin/sh
+sudo ifconfig wwan0 down' > /bin/hotpistop
+
+echo '#!/bin/sh
+sudo udisksctl mount -b /dev/sda1' > /bin/hotpimount
+
+echo '#!/bin/sh
+sudo udisksctl unmount -b /dev/sda1' > /bin/hotpiunmount
+
+sed -i '/allow-hotplug br0/,$d' /etc/network/interfaces
+echo 'allow-hotplug br0
+iface br0 inet static
+address 192.168.0.1
+bridge_ports wlan0 eth0' >> /etc/network/interfaces
+
+sed -i '/interface=br0/,$d' /etc/dnsmasq.conf
+echo 'interface=br0
+dhcp-range=192.168.0.2,192.168.0.254,24h' >> /etc/dnsmasq.conf
+
+sed -i /^net.ipv4.ip_forward=1/d /etc/sysctl.conf
+echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
+
+echo 'interface=wlan0
+bridge=br0
+ieee80211ac=1
+channel=36
+hw_mode=a
+ht_capab=[HT40+]
+wmm_enabled=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+country_code=CA
+ssid=RPI-5G
+wpa_passphrase=petate2022' > /etc/hostapd/hostapd.conf
+
+sed -i '/\[USB Storage]/,$d' /etc/samba/smb.conf
+echo '[USB Storage]
+path = /media/root
+public = yes
+writeable = yes' >> /etc/samba/smb.conf
+
+sed -i /usb_max_current_enable=1/d /boot/firmware/config.txt
+echo usb_max_current_enable=1 >> /boot/firmware/config.txt
+
+echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN="/bin/systemctl start hotpistart"
+ATTR{idVendor}=="2c7c", ATTR{idProduct}=="0125", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+
+echo '[Service]
+ExecStart=hotpistart' > /etc/systemd/system/hotpistart.service
+
+echo "[Service]
+ExecStart=sh -c 'iptables-restore < /etc/hotpitables'
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/hotpitables.service
+
+echo '[Service]
+ExecStart=udiskie -N -F
+[Install]
+WantedBy=multi-user.target' > /etc/systemd/system/hotpimount.service
+
+apt update && apt upgrade -y
+apt install bridge-utils dnsmasq hostapd ifupdown iptables libqmi-utils resolvconf samba udhcpc udiskie udisks2 xrdp -y
+apt purge dhcpcd modemmanager -y
+iptables -t nat -F
+iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
+iptables-save > /etc/hotpitables
+mkdir -p /media/root
+chmod 755 /bin/hotpi* /media/root
+systemctl unmask hostapd
+systemctl enable hostapd hotpimount hotpitables resolvconf
+reboot

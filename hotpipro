@@ -61,7 +61,6 @@ sed -i /usb_max_current_enable=1/d /boot/firmware/config.txt
 echo usb_max_current_enable=1 >> /boot/firmware/config.txt
 
 echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
-
 echo '[Service]
 ExecStart=hotpistart' > /etc/systemd/system/hotpistart.service
 

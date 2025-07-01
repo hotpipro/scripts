@@ -34,6 +34,8 @@ iptables -t nat -F
 iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
 iptables-save > /etc/hotpifilter
 
+# EDIT THE FOLLOWING SECTION
+
 echo 'interface=wlan0
 bridge=br0
 ieee80211ac=1
@@ -44,9 +46,9 @@ wmm_enabled=1
 wpa=2
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
-country_code=CA
+country_code=US
 ssid=RPI-5G
-wpa_passphrase=petate2022' > /etc/hostapd/hostapd.conf
+wpa_passphrase=password' > /etc/hostapd/hostapd.conf
 
 echo '[USB Storage]
 path = /media/root

@@ -25,10 +25,15 @@ Your Raspberry Pi will reboot and you are done.
 USER COMMANDS:
 
 hotpistart          ESTABLISH DATA CONNECTION
+
 hotpistop           TERMINATE DATA CONNECTION
+
 hotpimount          MOUNT USB DRIVE
+
 hotpiunmount        UNMOUNT USB DRIVE
+
 hotpireboot         REBOOT RASPBERRY PI
+
 hotpishutdown       SHUTDOWN RASPBERRY PI
 
 NOTE: The script will run as is without any modifications; however, it is recommended to edit the "country_code=", "ssid=", and "wpa_passphrase=" parameters, as the Wi-Fi country code is set to "US", the Wi-Fi network name is set to "RPI-5G", and the Wi-Fi password is set to "password" by default. Please locate the "# WI-FI NETWORK" section within the script. Your Wi-Fi country code must be capitalized, your Wi-Fi network name must have 1-32 characters, and your Wi-Fi password must have 8-63 characters. Do NOT remove the apostrophe at the end of your Wi-Fi password. Failure to follow these instructions correctly will result in your Wi-Fi access point not working or the script not installing properly.

@@ -108,7 +108,7 @@ writeable = yes' >> /etc/samba/smb.conf
 sed -i /usb_max_current_enable=1/d /boot/firmware/config.txt
 echo usb_max_current_enable=1 >> /boot/firmware/config.txt
 
-	# ACTIVE COOLING
+	# PWM FAN
 
 sed -i /dtparam=fan_temp0=50000/,+2d /boot/firmware/config.txt
 echo 'dtparam=fan_temp0=50000

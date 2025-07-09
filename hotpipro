@@ -23,12 +23,12 @@ sudo ifconfig wwan0 down' > /bin/hotpistop
 	# MOUNT USB DRIVE
 
 echo '#!/bin/sh
-sudo udisksctl mount -b /dev/$1' > /bin/hotpimount
+sudo udisksctl mount -b /dev/sda1' > /bin/hotpimount
 
 	# UNMOUNT USB DRIVE
 
 echo '#!/bin/sh
-sudo udisksctl unmount -b /dev/$1' > /bin/hotpiunmount
+sudo udisksctl unmount -b /dev/sda1' > /bin/hotpiunmount
 
 	# REBOOT RASPBERRY PI
 

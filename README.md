@@ -34,13 +34,13 @@ hotpistop
 
 - MOUNT USB DRIVE
 
-hotpimount <drive name>
+hotpimount drive name
 
 ie: hotpimount sda1
 
 - UNMOUNT USB DRIVE
 
-hotpiunmount <drive name>
+hotpiunmount drive name
 
 ie: hotpiunmount sda1
 

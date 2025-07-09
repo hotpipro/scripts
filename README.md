@@ -34,11 +34,15 @@ hotpistop
 
 - MOUNT USB DRIVE
 
-hotpimount usb drive name (example: hotpimount sda1)
+hotpimount usb drive name
+
+example: hotpimount sda1
 
 - UNMOUNT USB DRIVE
 
-hotpiunmount usb drive name (example: hotpiunmount sda1)
+hotpiunmount usb drive name
+
+example: hotpiunmount sda1
 
 - REBOOT RASPBERRY PI
 

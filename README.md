@@ -24,11 +24,11 @@ Your Raspberry Pi will reboot and you are done.
 
 USER COMMANDS
 
-- ESTABLISH DATA CONNECTION
+- START DATA CONNECTION
 
 hotpistart
 
-- TERMINATE DATA CONNECTION
+- STOP DATA CONNECTION
 
 hotpistop
 

@@ -80,7 +80,7 @@ wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 country_code=US
 ssid=RPI-5G
-wpa_passphrase=password' > /etc/hostapd/hostapd.conf
+wpa_passphrase=passphrase' > /etc/hostapd/hostapd.conf
 
 	# NETWORK-ATTACHED STORAGE
 

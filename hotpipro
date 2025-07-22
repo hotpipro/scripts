@@ -82,7 +82,7 @@ wpa_passphrase=petate2022' > /etc/hostapd/hostapd.conf
 
 	# NETWORK-ATTACHED STORAGE
 
-		# SAMBA SERVER
+		# SMB SERVER
 
 echo 'map to guest = Bad User
 [HotPi SMB]

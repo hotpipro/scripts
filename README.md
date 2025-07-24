@@ -24,7 +24,7 @@ Install the script by entering the following command in the terminal:
 
 Your Raspberry Pi will reboot and you are done.
 
-**USER COMMANDS**
+**<ins>USER COMMANDS</ins>**
 
 - START DATA CONNECTION
 
@@ -36,13 +36,13 @@ Your Raspberry Pi will reboot and you are done.
 
 - MOUNT USB DRIVE
 
-**hotpimount** [**usb drive name**]
+**hotpimount** \<**usb drive name**\>
 
 example: **hotpimount sda1**
 
 - UNMOUNT USB DRIVE
 
-**hotpiunmount** [**usb drive name**]
+**hotpiunmount** \<**usb drive name**\>
 
 example: **hotpiunmount sda1**
 

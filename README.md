@@ -1,6 +1,6 @@
 **HOTPI PRO - MOBILE HOTSPOT & MEDIA SERVER (SIMCOM SIM7600)**
 
-<U>**INSTALLATION INSTRUCTIONS**</U>
+<u>**INSTALLATION INSTRUCTIONS**</u>
 
 Connect your Raspberry Pi to the internet.
 

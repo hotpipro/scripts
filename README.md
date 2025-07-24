@@ -34,15 +34,15 @@
 
 **hotpistop**
 
-- MOUNT USB DRIVE
+- MOUNT USB STORAGE
 
-**hotpimount** \<**usb drive name**\>
+**hotpimount** \<**usb storage name**\>
 
 example: **hotpimount sda1**
 
-- UNMOUNT USB DRIVE
+- UNMOUNT USB STORAGE
 
-**hotpiunmount** \<**usb drive name**\>
+**hotpiunmount** \<**usb storage name**\>
 
 example: **hotpiunmount sda1**
 

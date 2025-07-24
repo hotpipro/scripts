@@ -1,4 +1,4 @@
-**HotPi Pro - Mobile Hotspot & Media Server (SIMCom SIM7600)**
+**<h2>HotPi Pro - Mobile Hotspot & Media Server (SIMCom SIM7600)</h2>**
 
 <br>
 

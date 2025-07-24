@@ -1,7 +1,7 @@
 **HOTPI PRO - MOBILE HOTSPOT & MEDIA SERVER (SIMCOM SIM7600)**
+
 <br>
-<br>
-<br>
+
 **<ins>INSTALLATION INSTRUCTIONS</ins>**
 
 - Connect your Raspberry Pi to the internet.
@@ -25,9 +25,9 @@
 **sudo hotpipro**
 
 - Your Raspberry Pi will reboot and you are done.
+
 <br>
-<br>
-<br>
+
 **<ins>USER COMMANDS</ins>**
 
 - START DATA CONNECTION
@@ -53,7 +53,7 @@ example: **hotpiunmount sda1**
 - RELOAD DLNA LIBRARY
 
 **hotpireload**
+
 <br>
-<br>
-<br>
+
 **NOTE:** The script will run as is without any modifications; however, it is recommended to edit the "**country_code=**", "**ssid=**", and "**wpa_passphrase=**" parameters, as the Wi-Fi country code is set to "**US**", the Wi-Fi network name is set to "**RPI-5G**", and the Wi-Fi passphrase is set to "**passphrase**" by default. Please locate the "**# WI-FI NETWORK**" section within the script. Your **Wi-Fi country code must be capitalized**, your **Wi-Fi network name must have 1-32 characters**, and your **Wi-Fi passphrase must have 8-63 characters**. Do **NOT** remove the apostrophe at the end of your Wi-Fi passphrase. Failure to follow these instructions correctly will result in your Wi-Fi access point not working or the script not installing properly.

@@ -2,7 +2,7 @@
 
 **<u>INSTALLATION INSTRUCTIONS</u>**
 
-Connect your Raspberry Pi to the internet.
+<u>Connect your Raspberry Pi to the internet.</u>
 
 Download the script by entering the following command in the terminal:
 

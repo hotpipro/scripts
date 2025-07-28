@@ -71,7 +71,6 @@ echo net.ipv4.ip_forward=1 > /etc/sysctl.conf
 
 iptables -t nat -F
 iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
-iptables -t nat -A POSTROUTING -o usb0 -j MASQUERADE
 iptables-save > /etc/hotpifilter
 
 	# WI-FI NETWORK

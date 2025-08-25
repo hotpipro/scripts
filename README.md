@@ -1,4 +1,4 @@
-**<h2>HotPi Pro - Mobile Hotspot & Media Server</h2>**
+**<h1>HotPi Pro - Mobile Hotspot & Media Server</h1>**
 
 <br>
 

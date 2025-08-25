@@ -6,13 +6,19 @@
 
 - Wi-Fi Hotspot w/ Ethernet Bridge
 
+  -
+
 - Plug & Play Mobile Data Connection
 
   - Your mobile data connection is automatically established when you plug your modem into a USB port as well as during system boot.
 
 - SMB File Server
 
+  -
+
 - DLNA Media Server
+
+  -
 
 <BR>
 

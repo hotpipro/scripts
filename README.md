@@ -2,6 +2,26 @@
 
 <br>
 
+**<h3><ins>FEATURES</ins></h3>**
+
+- Wi-Fi Hotspot w/ Ethernet Bridge
+
+- Plug & Play Data Connection
+
+- SMB File Server
+
+- DLNA Media Server
+
+<BR>
+
+**<h3><ins>SUPPORTED MODULES</ins></h3>**
+
+- SIMCom SIM7600
+
+- Quectel EC25
+
+<br>
+
 **<h3><ins>INSTALLATION INSTRUCTIONS</ins></h3>**
 
 - Connect your Raspberry Pi to the internet.

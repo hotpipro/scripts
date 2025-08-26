@@ -66,6 +66,10 @@
 
 **hotpistop**
 
+- LIST USB STORAGE
+
+**hotpilist**
+
 - MOUNT USB STORAGE
 
 **hotpimount** \<**usb storage name**\>

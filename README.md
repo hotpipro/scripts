@@ -6,7 +6,7 @@
 
 - **Wi-Fi Hotspot w/ Ethernet Bridge**
 
-  - Connect to your Raspberry Pi via Wi-Fi or Ethernet to access your mobile data connection, SMB file server, and DLNA media server.
+  - Simply connect to your Raspberry Pi via Wi-Fi or Ethernet using your smartphone, tablet, PC, or TV, and instantly gain access to your mobile data connection, SMB file server, and DLNA media server.
 
 - **Plug & Play Mobile Data Connection**
 

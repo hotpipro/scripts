@@ -18,7 +18,7 @@
 
 - **DLNA Media Server**
 
-  - Easily access your USB storage's media library using your favourite DLNA-enabled device, such as a smart TV.
+  - Easily access your media library using your favourite DLNA-enabled device, such as a smart TV.
 
 <BR>
 

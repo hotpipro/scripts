@@ -1,0 +1,170 @@
+#!/bin/sh
+
+############################################################################################################################################################
+
+# HotPi Pro - Mobile Hotspot & Media Server
+
+############################################################################################################################################################
+
+# PACKAGE MANAGEMENT
+
+apt update && apt upgrade -y
+apt install bridge-utils dnsmasq hostapd ifupdown iptables libqmi-utils minidlna resolvconf samba udhcpc udiskie udisks2 -y
+apt purge dhcpcd modemmanager -y
+
+############################################################################################################################################################
+
+# USER COMMANDS
+
+	# START INTERNET CONNECTION
+
+echo '#!/bin/sh
+sudo qmicli -d /dev/cdc-wdm0 --wds-noop --client-cid=$(grep CID /etc/hotpistate 2> /dev/null | grep -o [0-9]*) 2> /dev/null
+sudo qmicli -d /dev/cdc-wdm0 -E raw-ip
+sudo qmicli -d /dev/cdc-wdm0 --wds-start-network=ip-type=4 --client-no-release-cid | sudo tee /etc/hotpistate
+sudo udhcpc -i wwan0' > /bin/hotpistart
+
+	# STOP INTERNET CONNECTION
+
+echo '#!/bin/sh
+sudo ifconfig wwan0 down
+sudo qmicli -d /dev/cdc-wdm0 --wds-noop --client-cid=$(grep CID /etc/hotpistate 2> /dev/null | grep -o [0-9]*) 2> /dev/null' > /bin/hotpistop
+
+	# LIST USB STORAGE
+
+echo '#!/bin/sh
+lsblk -o name,size,type,mountpoint | sed /mmcblk0/d' > /bin/hotpilist
+
+	# MOUNT USB STORAGE
+
+echo '#!/bin/sh
+sudo udisksctl mount -b /dev/$1' > /bin/hotpimount
+
+	# UNMOUNT USB STORAGE
+
+echo '#!/bin/sh
+sudo udisksctl unmount -b /dev/$1' > /bin/hotpiunmount
+
+	# RELOAD DLNA LIBRARY
+
+echo '#!/bin/sh
+sudo systemctl restart minidlna' > /bin/hotpireload
+
+############################################################################################################################################################
+
+# NETWORK SETTINGS
+
+	# NETWORK BRIDGE
+
+		# GATEWAY NODE
+
+sed -i /^allow-hotplug\ br0$/,+3d /etc/network/interfaces
+echo 'allow-hotplug br0
+iface br0 inet static
+address 192.168.0.1
+bridge_ports wlan0 eth0' >> /etc/network/interfaces
+
+		# DHCP SERVER
+
+sed -i /^interface=br0$/,+1d /etc/dnsmasq.conf
+echo 'interface=br0
+dhcp-range=192.168.0.2,192.168.0.254,24h' >> /etc/dnsmasq.conf
+
+		# PACKET FORWARDING
+
+sed -i /^net.ipv4.ip_forward=1$/d /etc/sysctl.conf
+echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
+
+		# PACKET FILTERING
+
+iptables -t nat -F
+iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE
+iptables-save > /etc/hotpifilter
+
+	# WI-FI NETWORK
+
+echo 'interface=wlan0
+bridge=br0
+ieee80211ac=1
+channel=36
+hw_mode=a
+ht_capab=[HT40+]
+wmm_enabled=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+country_code=US
+ssid=RPI-5G
+wpa_passphrase=passphrase' > /etc/hostapd/hostapd.conf
+
+	# NETWORK-ATTACHED STORAGE
+
+		# SMB FILE SERVER
+
+sed -i -e /^\\[homes]$/,+21s/^/#/ -e /^\\[print$]$/,+5s/^/#/ -e /^\\[HotPi\ SMB]$/,+3d /etc/samba/smb.conf
+echo '[HotPi SMB]
+path = /media/root
+public = yes
+writeable = yes' >> /etc/samba/smb.conf
+
+		# DLNA MEDIA SERVER
+
+sed -i -e /^media_dir=\\/var\\/lib\\/minidlna$/s/^/#/ -e /^friendly_name=HotPi\ DLNA$/,+3d /etc/minidlna.conf
+echo 'friendly_name=HotPi DLNA
+media_dir=/media/root
+root_container=B
+inotify=yes' >> /etc/minidlna.conf
+
+############################################################################################################################################################
+
+# POWER SETTINGS
+
+	# USB PORTS
+
+sed -i /^usb_max_current_enable=1$/d /boot/firmware/config.txt
+echo usb_max_current_enable=1 >> /boot/firmware/config.txt
+
+############################################################################################################################################################
+
+# AUTOMATION
+
+	# INTERNET CONNECTION
+
+echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN="/bin/systemctl start hotpistart"
+ATTR{idVendor}=="2c7c", ATTR{idProduct}=="0125", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+echo '[Service]
+ExecStart=hotpistart' > /etc/systemd/system/hotpistart.service
+
+	# PACKET FILTERING
+
+echo '[Service]
+ExecStart=sh -c "iptables-restore < /etc/hotpifilter"
+[Install]
+WantedBy=multi-user.target' > /etc/systemd/system/hotpifilter.service
+
+	# USB STORAGE MOUNTING
+
+echo '[Service]
+ExecStart=udiskie -N -F
+[Install]
+WantedBy=multi-user.target' > /etc/systemd/system/hotpimount.service
+
+	# DLNA MEDIA SERVER
+
+echo '[Service]
+ExecStart=sh -c "sleep 15 ; systemctl start minidlna"
+[Install]
+WantedBy=multi-user.target' > /etc/systemd/system/hotpiserver.service
+
+############################################################################################################################################################
+
+# EXECUTION
+
+mkdir -p /media/root
+chmod 755 /bin/hotpi* /media/root
+systemctl unmask hostapd
+systemctl enable hostapd hotpifilter hotpimount hotpiserver resolvconf
+systemctl disable minidlna
+reboot
+
+############################################################################################################################################################

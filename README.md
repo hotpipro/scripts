@@ -58,33 +58,33 @@
 
 **<h3><ins>USER COMMANDS</ins></h3>**
 
-- START MOBILE DATA CONNECTION
+- START INTERNET CONNECTION
 
 **hotpistart**
 
-- STOP MOBILE DATA CONNECTION
+- STOP INTERNET CONNECTION
 
 **hotpistop**
 
-- LIST USB STORAGE DEVICE
+- LIST USB STORAGE
 
 **hotpilist**
 
-- MOUNT USB STORAGE DEVICE
+- MOUNT USB STORAGE
 
 **hotpimount** \<**usb storage name**\>
 
 example: **hotpimount sda1**
 
-- UNMOUNT USB STORAGE DEVICE
+- UNMOUNT USB STORAGE
 
 **hotpiunmount** \<**usb storage name**\>
 
 example: **hotpiunmount sda1**
 
-- RESTART DLNA MEDIA SERVER
+- RELOAD DLNA LIBRARY
 
-**hotpirestart**
+**hotpireload**
 
 <br>
 <br>

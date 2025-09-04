@@ -111,7 +111,7 @@ wpa_key_mgmt=WPA-PSK
 
 rsn_pairwise=CCMP
 
-country_code=**US**
+country_code=**UK**
 
 ssid=**John's Wi-Fi**
 

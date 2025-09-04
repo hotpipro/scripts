@@ -4,6 +4,8 @@
 
 **<h3><ins>FEATURES</ins></h3>**
 
+<br>
+
 - **Wi-Fi Hotspot w/ Ethernet Bridge**
 
   - Simply connect to your Raspberry Pi via Wi-Fi or Ethernet using your smartphone, tablet, PC, or smart TV, and instantly gain access to your mobile data connection, SMB file server, and DLNA media server.
@@ -23,6 +25,8 @@
 <br>
 
 **<h3><ins>INSTALLATION INSTRUCTIONS</ins></h3>**
+
+<br>
 
 - Connect your Raspberry Pi to the internet.
 
@@ -49,6 +53,9 @@
 <br>
 
 **<h3><ins>USER COMMANDS</ins></h3>**
+
+<br>
+<br>
 
 - START INTERNET CONNECTION
 
@@ -86,6 +93,9 @@ example: **hotpiunmount sda1**
 <br>
 
 **<h3><ins>EXAMPLE</ins></h3>**
+
+<br>
+<br>
 
 \# Wi-Fi Network
 

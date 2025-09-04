@@ -82,3 +82,37 @@ example: **hotpiunmount sda1**
 <br>
 
 **NOTE:** The script will run as is without any modifications; however, it is recommended to edit the "**country_code=**", "**ssid=**", and "**wpa_passphrase=**" parameters, as the Wi-Fi country code is set to "**US**", the Wi-Fi network name is set to "**RPI-5G**", and the Wi-Fi network password is set to "**password**" by default. Please locate the "**# Wi-Fi Network**" section within the script. Your **Wi-Fi country code must be capitalized**, your **Wi-Fi network name must have 1-32 characters**, and your **Wi-Fi network password must have 8-63 characters**. Do **NOT** remove the apostrophe at the end of your Wi-Fi network password. Failure to follow these instructions correctly will result in your Wi-Fi access point not working or the script not installing properly.
+
+<br>
+
+**<h3><ins>EXAMPLE</ins></h3>**
+
+\# Wi-Fi Network
+
+<br>
+
+echo 'interface=wlan0
+
+bridge=br0
+
+ieee80211ac=1
+
+channel=36
+
+hw_mode=a
+
+ht_capab=[HT40+]
+
+wmm_enabled=1
+
+wpa=2
+
+wpa_key_mgmt=WPA-PSK
+
+rsn_pairwise=CCMP
+
+country_code=**US**
+
+ssid=**John's Wi-Fi**
+
+wpa_passphrase=**1l0v3k1tt3ns**' > /etc/hostapd/hostapd.conf

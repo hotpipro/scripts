@@ -105,11 +105,11 @@ echo 'interface=wlan0
 
 bridge=br0
 
-ieee80211ac=1
+ieee80211n=1
 
-channel=36
+hw_mode=g
 
-hw_mode=a
+channel=1
 
 ht_capab=[HT40+]
 

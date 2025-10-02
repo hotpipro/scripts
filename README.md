@@ -124,5 +124,44 @@ rsn_pairwise=CCMP
 country_code=**UK**
 
 ssid=**John's Wi-Fi**
-
+ 
 wpa_passphrase=**1l0v3k1tt3ns**' > /etc/hostapd/hostapd.conf
+
+<br>
+
+**<h3><ins>Module Compatibility</ins></h3>**
+
+<br>
+<br>
+
+HotPi Pro is set to run with the SIMCom SIM7600 module by default. Different modules may be used by modifying the vendor and product ID in following line within the script:
+
+<br>
+
+echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+
+<br>
+
+For example, to use the Quectel EC25 module, you would change **1e0e** to **2c7c** and **9001** to **0125** in the following manner:
+
+<br>
+
+echo 'ATTR{idVendor}=="**2c7c**", ATTR{idProduct}=="**0125**", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+
+<br>
+
+Type **lsusb** in the terminal to get your specific module vendor and product ID. You should see something like this:
+
+<br>
+
+Bus 001 Device 009: ID 1e0e:9001 Qualcomm / Option SimTech, Incorporated
+
+Bus 001 Device 003: ID 0424:ec00 Microchip Technology, Inc. (formerly SMSC) SMSC9512/9514 Fast Ethernet Adapter
+
+Bus 001 Device 002: ID 0424:9514 Microchip Technology, Inc. (formerly SMSC) SMC9514 Hub
+
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+<br>
+
+In this example, **Qualcomm / Option SimTech, Incorporated** is the SIMCom SIM7600 module and **1e0e:9001** is the vendor and product ID.

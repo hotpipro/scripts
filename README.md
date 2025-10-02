@@ -164,4 +164,4 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
 <br>
 
-In this example, **Qualcomm / Option SimTech, Incorporated** is the SIMCom SIM7600 module and **1e0e:9001** is the vendor and product ID.
+In this example, **Qualcomm / Option SimTech, Incorporated** is the SIMCom SIM7600 module and **1e0e:9001** is its vendor and product ID.

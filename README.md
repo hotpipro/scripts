@@ -88,7 +88,7 @@ example: **hotpiunmount sda1**
 <br>
 <br>
 
-**NOTE:** The script will run as is without any modifications; however, it is recommended to edit the "**country_code=**", "**ssid=**", and "**wpa_passphrase=**" parameters, as the Wi-Fi country code is set to "**US**", the Wi-Fi network name is set to "**raspberrypi**", and the Wi-Fi network password is set to "**password**" by default. Please locate the "**# Wi-Fi Network**" section within the script. Your **Wi-Fi country code must be capitalized**, your **Wi-Fi network name must have 1-32 characters**, and your **Wi-Fi network password must have 8-63 characters**. Do **NOT** remove the apostrophe at the end of your Wi-Fi network password. Failure to follow these instructions correctly will result in your Wi-Fi access point not working or the script not installing properly.
+**NOTE:** The script will run as is without any modifications; however, it is recommended to modify the "**country_code=**", "**ssid=**", and "**wpa_passphrase=**" parameters, as the Wi-Fi country code is set to "**US**", the Wi-Fi network name is set to "**raspberrypi**", and the Wi-Fi network password is set to "**password**" by default. Please locate the "**# Wi-Fi Network**" section within the script. Your **Wi-Fi country code must be capitalized**, your **Wi-Fi network name must have 1-32 characters**, and your **Wi-Fi network password must have 8-63 characters**. Do **NOT** remove the apostrophe at the end of your Wi-Fi network password. Failure to follow these instructions correctly will result in your Wi-Fi access point not working or the script not installing properly.
 
 <br>
 

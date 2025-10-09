@@ -81,6 +81,14 @@ example: **hotpimount sda1**
 
 example: **hotpiunmount sda1**
 
+- READ-ONLY SMB SHARE
+
+**hotpiread**
+
+- WRITEABLE SMB SHARE
+
+**hotpiwrite**
+
 - RELOAD DLNA LIBRARY
 
 **hotpireload**

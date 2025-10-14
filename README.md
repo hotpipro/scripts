@@ -16,7 +16,7 @@
 
 - **SMB File Server**
 
-  - Easily access your file storage using a smartphone, tablet, or PC.
+  - Easily access your file storage using a SMB-enabled device, such as a smartphone, tablet, or PC.
 
 - **DLNA Media Server**
 

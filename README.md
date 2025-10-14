@@ -93,6 +93,10 @@ example: **hotpiunmount sda1**
 
 **hotpireload**
 
+- UPDATE RASPBERRY PI
+
+**hotpiupdate**
+
 <br>
 <br>
 

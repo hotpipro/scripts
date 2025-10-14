@@ -146,7 +146,7 @@ wpa_passphrase=**1l0v3k1tt3ns**' > /etc/hostapd/hostapd.conf
 <br>
 <br>
 
-HotPi Pro is set to run with the SIMCom SIM7600 module by default. Different modules may be used by modifying the vendor and product ID in following line within the script:
+HotPi Pro is set to run with the SIMCom SIM7600 module by default. Different modules may be used by modifying the vendor and product ID in the following line within the script prior to installation:
 
 <br>
 

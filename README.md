@@ -20,7 +20,7 @@
 
 - **DLNA Media Server**
 
-  - Easily access your media library using any DLNA-enabled device, such as a smart TV.
+  - Easily access your media library using a DLNA-enabled device, such as a smart TV.
 
 <br>
 

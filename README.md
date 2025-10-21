@@ -150,7 +150,7 @@ HotPi Pro is set to run with the SIMCom SIM7600 module by default. Different mod
 
 <br>
 
-echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpistart.rules
 
 <br>
 
@@ -158,7 +158,7 @@ For example, to use the Quectel EC25 module, you would change **1e0e** to **2c7c
 
 <br>
 
-echo 'ATTR{idVendor}=="**2c7c**", ATTR{idProduct}=="**0125**", RUN="/bin/systemctl start hotpistart"' > /etc/udev/rules.d/hotpistart.rules
+echo 'ATTR{idVendor}=="**2c7c**", ATTR{idProduct}=="**0125**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpistart.rules
 
 <br>
 

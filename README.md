@@ -16,7 +16,7 @@
 
 - **SMB File Server**
 
-  - Easily access your file storage using a SMB-enabled device, such as a smartphone, tablet, PC, or TV.
+  - Easily access your network-attached file storage using a SMB-enabled device, such as a smartphone, tablet, PC, or TV.
 
 <br>
 

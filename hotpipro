@@ -94,17 +94,17 @@ echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 
 	# Wi-Fi Network
 
-echo 'interface=wlan0
-bridge=br0
-ieee80211n=1
-hw_mode=g
+echo 'bridge=br0
 channel=1
+country_code=US
+hw_mode=g
+ieee80211n=1
+interface=wlan0
+rsn_pairwise=CCMP
+ssid=raspberrypi
 wmm_enabled=1
 wpa=2
 wpa_key_mgmt=WPA-PSK
-rsn_pairwise=CCMP
-country_code=US
-ssid=raspberrypi
 wpa_passphrase=password' > /etc/hostapd/hostapd.conf
 
 	# Network-Attached Storage

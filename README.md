@@ -18,10 +18,6 @@
 
   - Easily access your file storage using a SMB-enabled device, such as a smartphone, tablet, or PC.
 
-- **DLNA Media Server**
-
-  - Easily access your media library using a DLNA-enabled device, such as a smart TV.
-
 <br>
 
 **<h3><ins>INSTALLATION INSTRUCTIONS</ins></h3>**
@@ -88,10 +84,6 @@ example: **hotpiunmount sda1**
 - WRITEABLE SMB SHARE
 
 **hotpiwrite**
-
-- RELOAD DLNA LIBRARY
-
-**hotpireload**
 
 - UPDATE RASPBERRY PI
 

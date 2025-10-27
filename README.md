@@ -105,17 +105,21 @@ example: **hotpiunmount sda1**
 
 <br>
 
-echo 'interface=wlan0
-
-bridge=br0
-
-ieee80211n=1
-
-hw_mode=g
+echo 'bridge=br0
 
 channel=1
 
-ht_capab=[HT40+]
+country_code=**UK**
+
+hw_mode=g
+
+ieee80211n=1
+
+interface=wlan0
+
+rsn_pairwise=CCMP
+
+ssid=**John's Wi-Fi**
 
 wmm_enabled=1
 
@@ -123,12 +127,6 @@ wpa=2
 
 wpa_key_mgmt=WPA-PSK
 
-rsn_pairwise=CCMP
-
-country_code=**UK**
-
-ssid=**John's Wi-Fi**
- 
 wpa_passphrase=**1l0v3k1tt3ns**' > /etc/hostapd/hostapd.conf
 
 <br>

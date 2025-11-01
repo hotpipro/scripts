@@ -4,6 +4,8 @@ sudo wget -P /bin https://raw.githubusercontent.com/hotpipro/scripts/main/hotpip
 
 sudo chmod 755 /bin/hotpipro
 
+sudo nano /bin/hotpipro
+
 sudo hotpipro
 
 **<h3>Wi-Fi Network</h3>**

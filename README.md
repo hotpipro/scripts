@@ -25,6 +25,8 @@ sudo nano /bin/hotpipro
 
   - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpiauto.rules
 
+CTRL+X, Y
+
 sudo hotpipro
 
 **<h3>Wi-Fi Network</h3>**

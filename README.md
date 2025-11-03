@@ -35,8 +35,12 @@ sudo nano /etc/hostapd/hostapd.conf
 
 sudo nano /etc/udev/rules.d/hotpiauto.rules
 
-**Modem**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Vendor ID**&emsp;&emsp;&emsp;&emsp;**Product ID**
+- Quectel EC25
 
-Quectel EC25&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2c7c&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;0125
+  - Vendor ID: 2c7c
+  - Product ID: 0125
 
-SIMCom SIM7600&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;1e0e&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;9001
+- SIMCom SIM7600
+
+  - Vendor ID: 1e0e
+  - Product ID: 9001

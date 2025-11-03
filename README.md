@@ -6,7 +6,7 @@ sudo chmod 755 /bin/hotpipro
 
 sudo nano /bin/hotpipro
 
-- wi-fi country code, network name, password
+- wi-fi network country code, name, password
 
   - echo 'bridge=br0
   - channel=1

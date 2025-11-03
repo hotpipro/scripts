@@ -39,10 +39,10 @@ sudo nano /etc/udev/rules.d/hotpiauto.rules
 
 - Quectel EC25
 
-  - Vendor ID: 2c7c
-  - Product ID: 0125
+  - Vendor ID: **2c7c**
+  - Product ID: **0125**
 
 - SIMCom SIM7600
 
-  - Vendor ID: 1e0e
-  - Product ID: 9001
+  - Vendor ID: **1e0e**
+  - Product ID: **9001**

@@ -21,19 +21,6 @@ sudo nano /bin/hotpipro
   - wpa_key_mgmt=WPA-PSK
   - wpa_passphrase=**password**' > /etc/hostapd/hostapd.conf
 
-- Wi-Fi N
-
-  - channel=1
-  - hw_mode=g
-  - ieee80211n=1
-
-- Wi-Fi AC
-
-  - channel=36
-  - ht_capab=[HT40+]
-  - hw_mode=a
-  - ieee80211ac=1
-
 - cellular modem vendor ID, product ID
 
   - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpiauto.rules
@@ -45,6 +32,19 @@ sudo hotpipro
 **<h3>Wi-Fi Network</h3>**
 
 sudo nano /etc/hostapd/hostapd.conf
+
+- Wi-Fi N 2.4 GHZ 72 Mbps (Raspberry Pi 3, 3B+, 4, 5)
+
+  - channel=1
+  - hw_mode=g
+  - ieee80211n=1
+
+- Wi-Fi AC 5 GHZ 200 Mbps (Raspberry Pi 3B+, 4, 5)
+
+  - channel=36
+  - ht_capab=[HT40+]
+  - hw_mode=a
+  - ieee80211ac=1
 
 **<h3>Cellular Modem</h3>**
 

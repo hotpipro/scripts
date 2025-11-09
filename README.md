@@ -21,6 +21,19 @@ sudo nano /bin/hotpipro
   - wpa_key_mgmt=WPA-PSK
   - wpa_passphrase=**password**' > /etc/hostapd/hostapd.conf
 
+- Wi-Fi N
+
+  - channel=1
+  - hw_mode=g
+  - ieee80211n=1
+
+- Wi-Fi AC
+
+  - channel=36
+  - ht_capab=[HT40+]
+  - hw_mode=a
+  - ieee80211ac=1
+
 - cellular modem vendor ID, product ID
 
   - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpiauto.rules

@@ -71,8 +71,8 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 - sudo hotpistart
 - sudo hotpistop
 - sudo hotpilist
-- sudo hotpimount
-- sudo hotpiunmount
+- sudo hotpimount <name>
+- sudo hotpiunmount <name>
 - sudo hotpiread
 - sudo hotpiwrite
 - sudo hotpiupdate

@@ -66,7 +66,7 @@ Bus 001 Device 003: ID 0424:ec00 Microchip Technology, Inc. (formerly SMSC) SMSC
 Bus 001 Device 002: ID 0424:9514 Microchip Technology, Inc. (formerly SMSC) SMC9514 Hub  
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
-**<h3>User Commands</h3>**
+**<h3>User Command</h3>**
 
 - sudo hotpistart
 - sudo hotpistop

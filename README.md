@@ -68,11 +68,19 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
 **<h3>User Command</h3>**
 
-- sudo hotpistart
-- sudo hotpistop
-- sudo hotpilist
-- sudo hotpimount sda1
-- sudo hotpiunmount sda1
-- sudo hotpiread
-- sudo hotpiwrite
-- sudo hotpiupdate
+- Start Internet Connection
+  - sudo hotpistart
+- Stop Internet Connection
+  - sudo hotpistop
+- List USB Storage
+  - sudo hotpilist
+- Mount USB Storage
+  - sudo hotpimount sda1
+- Unmount USB Storage
+  - sudo hotpiunmount sda1
+- Read-Only SMB Share
+  - sudo hotpiread
+- Writeable SMB Share
+  - sudo hotpiwrite
+- Update Raspberry Pi
+  - sudo hotpiupdate

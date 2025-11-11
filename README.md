@@ -33,13 +33,13 @@ sudo hotpipro
 
 sudo nano /etc/hostapd/hostapd.conf
 
-- Wi-Fi N 2.4 GHZ 72 Mbps (Raspberry Pi 3B, 3B+, 4, 5)
+- Wi-Fi N 2.4 GHZ 72 Mbps (Raspberry Pi 3B, 3B+, 4B, 5)
 
   - channel=1
   - hw_mode=g
   - ieee80211n=1
 
-- Wi-Fi AC 5 GHZ 200 Mbps (Raspberry Pi 3B+, 4, 5)
+- Wi-Fi AC 5 GHZ 200 Mbps (Raspberry Pi 3B+, 4B, 5)
 
   - channel=36
   - ht_capab=[HT40+]

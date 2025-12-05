@@ -64,12 +64,12 @@ writeable = yes' >> /etc/samba/smb.conf
 
 echo 'usb_max_current_enable=1' >> /boot/firmware/config.txt
 
-echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpiauto.rules
+echo 'ATTR{idVendor}=="1e0e", ATTR{idProduct}=="9001", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpi.rules
 
 echo '[Service]
 ExecStart=sh -c "iptables -t nat -A POSTROUTING -o wwan0 -j MASQUERADE ; udiskie -N -F"
 [Install]
-WantedBy=multi-user.target' > /etc/systemd/system/hotpiauto.service
+WantedBy=multi-user.target' > /etc/systemd/system/hotpi.service
 
 mkdir -p /media/root
 chmod 755 /bin/hotpi* /media/root

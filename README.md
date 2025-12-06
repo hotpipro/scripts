@@ -82,11 +82,11 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
 - Mount USB Storage
 
-  - sudo hotpimount sda1
+  - sudo hotpimount
 
 - Unmount USB Storage
 
-  - sudo hotpiunmount sda1
+  - sudo hotpiunmount
 
 - Read-Only SMB Share
 

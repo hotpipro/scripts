@@ -71,5 +71,5 @@ WantedBy=multi-user.target' > /etc/systemd/system/hotpi.service
 mkdir -p /media/root
 chmod 755 /bin/hotpi* /media/root
 systemctl unmask hostapd
-systemctl enable hostapd hotpiauto resolvconf
+systemctl enable hostapd hotpi resolvconf
 reboot

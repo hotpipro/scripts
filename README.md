@@ -23,7 +23,7 @@ sudo nano /bin/hotpipro
 
 - cellular modem vendor ID, product ID
 
-  - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpiauto.rules
+  - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpi.rules
 
 CTRL+X, Y
 
@@ -48,7 +48,7 @@ sudo nano /etc/hostapd/hostapd.conf
 
 **<h3>Cellular Modem</h3>**
 
-sudo nano /etc/udev/rules.d/hotpiauto.rules
+sudo nano /etc/udev/rules.d/hotpi.rules
 
 - Quectel EC25
 

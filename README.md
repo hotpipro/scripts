@@ -25,7 +25,7 @@ sudo nano /bin/hotpipro
 
   - echo 'ATTR{idVendor}=="**1e0e**", ATTR{idProduct}=="**9001**", RUN="/bin/systemd-run hotpistart"' > /etc/udev/rules.d/hotpi.rules
 
-CTRL+X, Y
+CTRL+X, Y, ENTER
 
 sudo hotpipro
 
